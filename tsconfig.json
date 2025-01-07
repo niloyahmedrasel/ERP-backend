@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "target": "ES6",                       // JavaScript version to compile to
+    "module": "commonjs",                   // Module system for Node.js
+    "outDir": "./dist",                     // Directory for compiled JavaScript
+    "rootDir": "./src",                     // Directory for TypeScript source code
+    "esModuleInterop": true,                // Ensures compatibility with CommonJS modules
+    "skipLibCheck": true,                   // Skip checking of declaration files
+    "strict": true,                         // Enable all strict type-checking options
+    "forceConsistentCasingInFileNames": true // Enforce consistent file naming
+  },
+  "include": [
+    "src/**/*.ts"                           // Include all .ts files in the src folder
+  ],
+  "exclude": [
+    "node_modules"                          // Exclude the node_modules folder
+  ]
+}
