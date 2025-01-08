@@ -26,6 +26,8 @@ const port = 5500;
 app.use(cors());
 dbConnect();
 
+console.log("hi")
+
 app.use(express.json());
 
 app.use("/api/user", userRouter);
