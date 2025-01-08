@@ -29,7 +29,7 @@ export class UserService {
     profilePicture: string,
     status: string
   ): Promise<IEmployee> {
-    try {
+    
       
       const employee = await employeeRepository.create({
         firstName,
@@ -48,11 +48,12 @@ export class UserService {
         status,
       });
 
+      if(!employee){
+        throw new Error("user not created")
+      }
+
       return employee;
-    } catch (error) {
-      console.error("Error creating user: ", error);
-      throw new Error("Error creating user: ");
-    }
+    
   }
 
   async getUserById(userId: string): Promise<IEmployee | null> {

@@ -51,9 +51,7 @@ export class UserController {
         data: employee,
       });
     } catch (error) {
-      res.status(500).json({
-        message: "Error creating user",
-      });
+      res.status(500).json({ message: error instanceof Error ? error.message : 'An unexpected error occurred' });
     }
   }
 
