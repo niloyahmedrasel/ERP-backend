@@ -26,9 +26,6 @@ const port = 5500;
 app.use(cors());
 dbConnect();
 
-console.log("hi")
-console.log("hello");
-console.log("checking")
 
 app.use(express.json());
 
