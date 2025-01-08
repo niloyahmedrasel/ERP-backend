@@ -30,6 +30,15 @@ export class BankAccountController {
     }
   }
 
+  async getAllBankAccount(req: Request, res: Response): Promise<void> {
+    try{
+      const response = await bankAccountService.getAllBankAccount();
+      res.status(200).json({ data: response });
+    }catch(error){
+      res.status(500).json({ message: error instanceof Error ? error.message : 'An unexpected error occurred' });
+    }
+  }
+
 
   async updateAccount(req: Request, res: Response): Promise<void> {
     const { accountNumber } = req.params; 

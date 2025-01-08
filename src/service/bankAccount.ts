@@ -24,6 +24,15 @@ export class BankAccountService {
       return bankAccount;
   }
 
+  async getAllBankAccount(): Promise<IBankAccount[]> {
+
+      const bankAccounts = await bankAccountRepository.find({});
+      if(!bankAccounts) {
+        throw new Error("Error retrieving BankAccounts");
+      }
+      return bankAccounts;
+  }
+
   
   async updateAccount(accountNumber: string, updates: Partial<IBankAccount>): Promise<IBankAccount | null> {
     

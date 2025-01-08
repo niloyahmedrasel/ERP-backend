@@ -66,6 +66,9 @@ export class UserService {
     }
   }
 
+  async getAllUsers(): Promise<IEmployee[]> {
+     return await employeeRepository.find({});
+  }
 
   async updateUser(userId: string, updatedUserData: any): Promise<IEmployee | null> {
     try {
