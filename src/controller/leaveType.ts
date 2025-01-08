@@ -13,7 +13,7 @@ export class LeaveTypeController {
       const leaveType = await leaveTypeService.createLeaveType(typeName, description, maxDaysPerYear);
       res.status(200).json({ data: leaveType });
     } catch (error) {
-      res.status(500).json({ message: "Error creating leave type" });
+      res.status(500).json({ message: error instanceof Error ? error.message : 'An unexpected error occurred' });
     }
   }
 
@@ -23,7 +23,7 @@ export class LeaveTypeController {
       const leaveTypes = await leaveTypeService.getLeaveTypes();
       res.status(200).json({ data: leaveTypes });
     } catch (error) {
-      res.status(500).json({ message: "Error fetching leave types" });
+      res.status(500).json({ message: error instanceof Error ? error.message : 'An unexpected error occurred' });
     }
   }
 
@@ -39,7 +39,7 @@ export class LeaveTypeController {
       }
       res.status(200).json({ data: leaveType });
     } catch (error) {
-      res.status(500).json({ message: "Error fetching leave type by ID" });
+      res.status(500).json({ message: error instanceof Error ? error.message : 'An unexpected error occurred' });
     }
   }
 
@@ -56,7 +56,7 @@ export class LeaveTypeController {
       }
       res.status(200).json({ data: leaveType });
     } catch (error) {
-      res.status(500).json({ message: "Error updating leave type" });
+      res.status(500).json({ message: error instanceof Error ? error.message : 'An unexpected error occurred' });
     }
   }
 
@@ -68,7 +68,7 @@ export class LeaveTypeController {
       await leaveTypeService.deleteLeaveType(id);
       res.status(200).json({ message: "Leave type deleted successfully" });
     } catch (error) {
-      res.status(500).json({ message: "Error deleting leave type" });
+      res.status(500).json({ message: error instanceof Error ? error.message : 'An unexpected error occurred' });
     }
   }
 }

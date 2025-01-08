@@ -8,13 +8,14 @@ export class SalaryComponentService {
 
   
   async createSalaryComponent(name: string, type: string, calculationMethod: string, isTaxable: boolean, description: string): Promise<ISalaryComponent> {
-    try {
+    
       const salaryComponent = await salaryComponentRepository.create({ name, type, calculationMethod, isTaxable, description });
+
+      if(!salaryComponent) {
+        throw new Error('Error creating salary component');
+      }
       return salaryComponent;
-    } catch (error) {
-      console.error('Error creating salary component:', error);
-      throw new Error('Error creating salary component');
-    }
+    
   }
 
   

@@ -102,19 +102,15 @@ export class PayrollService {
   }
 
   async getPayrolls(): Promise<IPayroll[]> {
-    try {
+   
       return await payrollRepository.find({});
-    } catch (error) {
-      throw new Error("Error fetching payrolls");
-    }
+
   }
 
   async getPayrollById(id: string): Promise<IPayroll | null> {
-    try {
+    
       return await payrollRepository.findById(id);
-    } catch (error) {
-      throw new Error("Error fetching payroll by ID");
-    }
+    
   }
 
   async updatePayroll(
@@ -127,7 +123,7 @@ export class PayrollService {
     addComponent: any,
     editComponent: any
   ): Promise<IPayroll | null> {
-    try {
+    
       let grossSalary = 0;
       let totalDeductions = 0;
       let netSalary = 0;
@@ -210,22 +206,18 @@ export class PayrollService {
       await payrollData.save();
 
       return payrollData;
-    } catch (error) {
-      console.log(error);
-      throw new Error("Error updating payroll");
-    }
   }
 
-  async deletePayroll(id: string): Promise<IPayroll | null> {
-    try {
-      return await payrollRepository.deleteById(id);
-    } catch (error) {
-      throw new Error("Error deleting payroll");
-    }
+  async deletePayroll(id: string): Promise<Boolean | null> {
+    
+      const deleted = await payrollRepository.deleteById(id);
+
+      return deleted?true:false;
+      
   }
 
   async generatePayrollForAllEmployees() {
-    try {
+   
       const employees = await employeeRepository.find({});
       for (let employee of employees) {
         const salaryScale = await salaryScaleRepository.findOne({
@@ -254,8 +246,5 @@ export class PayrollService {
       }
 
       console.log("Payroll generation completed for all employees.");
-    } catch (error) {
-      console.error("Error generating payroll for all employees:", error);
-    }
   }
 }

@@ -12,7 +12,7 @@ export class EmploymentStatusController {
       const employmentStatus = await employmentStatusService.createEmploymentStatus(statusName, description);
       res.status(200).json({ data: employmentStatus });
     } catch (error) {
-      res.status(500).json({ message: "Error creating employment status" });
+      res.status(500).json({ message: error instanceof Error ? error.message : 'An unexpected error occurred' });
     }
   }
 
@@ -21,7 +21,7 @@ export class EmploymentStatusController {
       const employmentStatuses = await employmentStatusService.getEmploymentStatuses();
       res.status(200).json({ data: employmentStatuses });
     } catch (error) {
-      res.status(500).json({ message: "Error fetching employment statuses" });
+      res.status(500).json({ message: error instanceof Error ? error.message : 'An unexpected error occurred' });
     }
   }
 
@@ -33,7 +33,7 @@ export class EmploymentStatusController {
       const employmentStatus = await employmentStatusService.updateEmploymentStatus(id, statusName, description);
       res.status(200).json({ data: employmentStatus });
     } catch (error) {
-      res.status(500).json({ message: "Error updating employment status" });
+      res.status(500).json({ message: error instanceof Error ? error.message : 'An unexpected error occurred' });
     }
   }
 
@@ -44,7 +44,7 @@ export class EmploymentStatusController {
       await employmentStatusService.deleteEmploymentStatus(id);
       res.status(200).json({ message: "Employment status deleted successfully" });
     } catch (error) {
-      res.status(500).json({ message: "Error deleting employment status" });
+      res.status(500).json({ message: error instanceof Error ? error.message : 'An unexpected error occurred' });
     }
   }
 }

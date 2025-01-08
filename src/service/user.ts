@@ -51,7 +51,7 @@ export class UserService {
       if(!employee){
         throw new Error("user not created")
       }
-
+      console.log("user----------------------", employee)
       return employee;
     
   }

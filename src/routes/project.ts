@@ -1,12 +1,13 @@
 import express from "express";
 import { ProjectController } from "../controller/project";
+import authenticateToken from "../middleware/auth";
 const router = express.Router();
 
-router.post("/create", new ProjectController().createProject);
-router.post("/milestone/:projectId", new ProjectController().createMileStone);
-router.get("/", new ProjectController().getProjects);
-router.get("/:projectId", new ProjectController().getSingleProject);
-router.put("/update/:projectId", new ProjectController().updateProject);
-router.delete("/delete/:projectId", new ProjectController().deleteProject);
+router.post("/create",authenticateToken, new ProjectController().createProject);
+router.post("/milestone/:projectId",authenticateToken, new ProjectController().createMileStone);
+router.get("/",authenticateToken, new ProjectController().getProjects);
+router.get("/:projectId",authenticateToken, new ProjectController().getSingleProject);
+router.put("/update/:projectId",authenticateToken, new ProjectController().updateProject);
+router.delete("/delete/:projectId",authenticateToken, new ProjectController().deleteProject);
 
 export default router;

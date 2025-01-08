@@ -3,14 +3,15 @@ import { DesignationController } from "../controller/designation";
 import validate from "../middleware/validate";
 import designationSchema from "../validation/designation";
 import { valid } from "joi";
+import authenticateToken from "../middleware/auth";
 
 const router = express.Router();
 
-router.post("/create",validate(designationSchema), new DesignationController().createDesignation);
-router.get("/:id", new DesignationController().getDesignationById);
-router.get("/", new DesignationController().getAllDesignations);
-router.put("/update/:id",validate(designationSchema), new DesignationController().updateDesignation);
-router.delete("/:id", new DesignationController().deleteDesignation);
-router.delete("/", new DesignationController().deleteDesignations);
+router.post("/create",authenticateToken, validate(designationSchema), new DesignationController().createDesignation);
+router.get("/:id",authenticateToken, new DesignationController().getDesignationById);
+router.get("/",authenticateToken, new DesignationController().getAllDesignations);
+router.put("/update/:id",authenticateToken, validate(designationSchema), new DesignationController().updateDesignation);
+router.delete("/:id",authenticateToken, new DesignationController().deleteDesignation);
+router.delete("/",authenticateToken, new DesignationController().deleteDesignations);
 
 export default router;

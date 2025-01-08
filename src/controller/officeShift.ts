@@ -13,7 +13,7 @@ export class OfficeShiftController {
       const officeShift = await officeShiftService.createOfficeShift(shiftName, startTime, endTime, breaks, workingDays, gracePeriod, overtimePolicy, description, isRotational);
       res.status(200).json({ data: officeShift });
     } catch (error) {
-      res.status(500).json({ message: "Error creating office shift" });
+      res.status(500).json({ message: error instanceof Error ? error.message : 'An unexpected error occurred' });
     }
   }
 
@@ -23,7 +23,7 @@ export class OfficeShiftController {
       const officeShifts = await officeShiftService.getOfficeShifts();
       res.status(200).json({ data: officeShifts });
     } catch (error) {
-      res.status(500).json({ message: "Error fetching office shifts" });
+      res.status(500).json({ message: error instanceof Error ? error.message : 'An unexpected error occurred' });
     }
   }
 
@@ -39,7 +39,7 @@ export class OfficeShiftController {
       }
       res.status(200).json({ data: officeShift });
     } catch (error) {
-      res.status(500).json({ message: "Error fetching office shift by ID" });
+      res.status(500).json({ message: error instanceof Error ? error.message : 'An unexpected error occurred' });
     }
   }
 
@@ -56,7 +56,7 @@ export class OfficeShiftController {
       }
       res.status(200).json({ data: officeShift });
     } catch (error) {
-      res.status(500).json({ message: "Error updating office shift" });
+      res.status(500).json({ message: error instanceof Error ? error.message : 'An unexpected error occurred' });
     }
   }
 
@@ -68,7 +68,7 @@ export class OfficeShiftController {
       await officeShiftService.deleteOfficeShift(id);
       res.status(200).json({ message: "Office shift deleted successfully" });
     } catch (error) {
-      res.status(500).json({ message: "Error deleting office shift" });
+      res.status(500).json({ message: error instanceof Error ? error.message : 'An unexpected error occurred' });
     }
   }
 }

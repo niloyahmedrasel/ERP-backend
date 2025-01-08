@@ -3,13 +3,14 @@ import { LeaveTypeController } from "../controller/leaveType";
 import exp from "constants";
 import validate from "../middleware/validate";
 import leaveTypeSchema from "../validation/leaveType";
+import authenticateToken from "../middleware/auth";
 
 const router = express.Router();
 
-router.post("/create",validate(leaveTypeSchema), new LeaveTypeController().createLeaveType);
-router.get("/", new LeaveTypeController().getLeaveTypes);
-router.get("/:id", new LeaveTypeController().getLeaveTypeById);
-router.put("/update/:id",validate(leaveTypeSchema), new LeaveTypeController().updateLeaveType);
-router.delete("/:id", new LeaveTypeController().deleteLeaveType);
+router.post("/create",authenticateToken, validate(leaveTypeSchema), new LeaveTypeController().createLeaveType);
+router.get("/",authenticateToken, new LeaveTypeController().getLeaveTypes);
+router.get("/:id",authenticateToken, new LeaveTypeController().getLeaveTypeById);
+router.put("/update/:id",authenticateToken, validate(leaveTypeSchema), new LeaveTypeController().updateLeaveType);
+router.delete("/:id",authenticateToken, new LeaveTypeController().deleteLeaveType);
 
 export default router;

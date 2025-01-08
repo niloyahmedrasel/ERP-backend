@@ -12,7 +12,7 @@ export class DepartmentController {
       const department = await departmentService.createDepartment(name, description);
       res.status(200).json({ data: department });
     } catch (error) {
-      res.status(500).json({ message: "Error creating department" });
+      res.status(500).json({ message: error instanceof Error ? error.message : 'An unexpected error occurred' });
     }
   }
 
@@ -21,7 +21,7 @@ export class DepartmentController {
       const departments = await departmentService.getDepartments();
       res.status(200).json({ data: departments });
     } catch (error) {
-      res.status(500).json({ message: "Error fetching departments" });
+      res.status(500).json({ message: error instanceof Error ? error.message : 'An unexpected error occurred' });
     }
   }
 
@@ -33,7 +33,7 @@ export class DepartmentController {
       const department = await departmentService.updateDepartment(id, name, description);
       res.status(200).json({ data: department });
     } catch (error) {
-      res.status(500).json({ message: "Error updating department" });
+      res.status(500).json({ message: error instanceof Error ? error.message : 'An unexpected error occurred' });
     }
   }
 
@@ -44,7 +44,7 @@ export class DepartmentController {
       await departmentService.deleteDepartment(id);
       res.status(200).json({ message: "Department deleted successfully" });
     } catch (error) {
-      res.status(500).json({ message: "Error deleting department" });
+      res.status(500).json({ message: error instanceof Error ? error.message : 'An unexpected error occurred' });
     }
   }
 }

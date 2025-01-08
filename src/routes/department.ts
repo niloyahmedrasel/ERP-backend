@@ -2,12 +2,13 @@ import express from "express";
 import { DepartmentController } from "../controller/department";
 import validate from "../middleware/validate";
 import departmentSchema from "../validation/department";
+import authenticateToken from "../middleware/auth";
 
 const router = express.Router();
 
-router.post("/create",validate(departmentSchema), new DepartmentController().createDepartment);
-router.get("/", new DepartmentController().getDepartments);
-router.put("/update/:id",validate(departmentSchema), new DepartmentController().updateDepartment);
-router.delete("/:id", new DepartmentController().deleteDepartment);
+router.post("/create",authenticateToken, validate(departmentSchema), new DepartmentController().createDepartment);
+router.get("/",authenticateToken, new DepartmentController().getDepartments);
+router.put("/update/:id",authenticateToken, validate(departmentSchema), new DepartmentController().updateDepartment);
+router.delete("/:id",authenticateToken, new DepartmentController().deleteDepartment);
 
 export default router;

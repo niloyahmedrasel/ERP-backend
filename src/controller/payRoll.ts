@@ -20,8 +20,8 @@ export class PayrollController {
       );
       res.status(200).json({ data: payroll });
     } catch (error: any) {
-      console.error('Error in createPayroll:', error);  // Add logging for debugging
-      res.status(500).json({ message: error.message });
+      console.error('Error in createPayroll:', error);  
+      res.status(500).json({ message: error instanceof Error ? error.message : 'An unexpected error occurred' });
   }
   }
 
@@ -30,7 +30,7 @@ export class PayrollController {
       const payrolls = await payrollService.getPayrolls();
       res.status(200).json({ data: payrolls });
     } catch (error) {
-      res.status(500).json({ message: "Error fetching payrolls" });
+      res.status(500).json({ message: error instanceof Error ? error.message : 'An unexpected error occurred' });
     }
   }
 
@@ -45,7 +45,7 @@ export class PayrollController {
         res.status(200).json({ data: payroll });
       }
     } catch (error) {
-      res.status(500).json({ message: "Error fetching payroll by ID" });
+      res.status(500).json({ message: error instanceof Error ? error.message : 'An unexpected error occurred' });
     }
   }
 
@@ -78,7 +78,7 @@ export class PayrollController {
         res.status(200).json({ data: updatedPayroll });
       }
     } catch (error) {
-      res.status(500).json({ message: "Error updating payroll" });
+      res.status(500).json({ message: error instanceof Error ? error.message : 'An unexpected error occurred' });
     }
   }
 
@@ -93,7 +93,7 @@ export class PayrollController {
         res.status(200).json({ message: "Payroll deleted successfully" });
       }
     } catch (error) {
-      res.status(500).json({ message: "Error deleting payroll" });
+      res.status(500).json({ message: error instanceof Error ? error.message : 'An unexpected error occurred' });
     }
   }
 }

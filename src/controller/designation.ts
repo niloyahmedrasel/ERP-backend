@@ -13,7 +13,7 @@ export class DesignationController {
       const designation = await designationService.createDesignation( title, description );
       res.status(200).json({ data: designation });
     } catch (error) {
-      res.status(500).json({ message: "Error creating designation" });
+      res.status(500).json({ message: error instanceof Error ? error.message : 'An unexpected error occurred' });
     }
   }
 
@@ -29,7 +29,7 @@ export class DesignationController {
         res.status(200).json({ data: designation });
       }
     } catch (error) {
-      res.status(500).json({ message: "Error fetching designation" });
+      res.status(500).json({ message: error instanceof Error ? error.message : 'An unexpected error occurred' });
     }
   }
 
@@ -39,7 +39,7 @@ export class DesignationController {
       const designations = await designationService.getAllDesignations();
       res.status(200).json({ data: designations });
     } catch (error) {
-      res.status(500).json({ message: "Error fetching designations" });
+      res.status(500).json({ message: error instanceof Error ? error.message : 'An unexpected error occurred' });
     }
   }
 
@@ -57,7 +57,7 @@ export class DesignationController {
         res.status(200).json({ data: updatedDesignation });
       }
     } catch (error) {
-      res.status(500).json({ message: "Error updating designation" });
+      res.status(500).json({ message: error instanceof Error ? error.message : 'An unexpected error occurred' });
     }
   }
 
@@ -73,7 +73,7 @@ export class DesignationController {
         res.status(404).json({ message: "Designation not found" });
       }
     } catch (error) {
-      res.status(500).json({ message: "Error deleting designation" });
+      res.status(500).json({ message: error instanceof Error ? error.message : 'An unexpected error occurred' });
     }
   }
 
@@ -89,7 +89,7 @@ export class DesignationController {
         res.status(404).json({ message: "No designations found to delete" });
       }
     } catch (error) {
-      res.status(500).json({ message: "Error deleting designations" });
+      res.status(500).json({ message: error instanceof Error ? error.message : 'An unexpected error occurred' });
     }
   }
 }

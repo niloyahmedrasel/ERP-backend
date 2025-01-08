@@ -12,7 +12,7 @@ export class HolidayController {
       const holiday = await holidayService.createHoliday(name, date, description);
       res.status(200).json({ data: holiday });
     } catch (error) {
-      res.status(500).json({ message: "Error creating holiday" });
+      res.status(500).json({ message: error instanceof Error ? error.message : 'An unexpected error occurred' });
     }
   }
 
@@ -21,7 +21,7 @@ export class HolidayController {
       const holidays = await holidayService.getHolidays();
       res.status(200).json({ data: holidays });
     } catch (error) {
-      res.status(500).json({ message: "Error fetching holidays" });
+      res.status(500).json({ message: error instanceof Error ? error.message : 'An unexpected error occurred' });
     }
   }
 
@@ -33,7 +33,7 @@ export class HolidayController {
       const holiday = await holidayService.updateHoliday(id, name, date, description);
       res.status(200).json({ data: holiday });
     } catch (error) {
-      res.status(500).json({ message: "Error updating holiday" });
+      res.status(500).json({ message: error instanceof Error ? error.message : 'An unexpected error occurred' });
     }
   }
 
@@ -44,7 +44,7 @@ export class HolidayController {
       await holidayService.deleteHoliday(id);
       res.status(200).json({ message: "Holiday deleted successfully" });
     } catch (error) {
-      res.status(500).json({ message: "Error deleting holiday" });
+      res.status(500).json({ message: error instanceof Error ? error.message : 'An unexpected error occurred' });
     }
   }
 }

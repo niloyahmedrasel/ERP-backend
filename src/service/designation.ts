@@ -6,57 +6,34 @@ const designationRepository = new DesignationRepository();
 export class DesignationService {
 
   async createDesignation(title: string, description: string): Promise<IDesignation> {
-    try {
-      return await designationRepository.create({title, description});
-    } catch (error) {
-      throw new Error("Error creating designation");
-    }
+    const create = await designationRepository.create({ title, description });
+    if (!create) throw new Error("Designation creation failed");
+    return create;
   }
 
-  
   async getDesignationById(id: string): Promise<IDesignation | null> {
-    try {
-      return await designationRepository.findById(id);
-    } catch (error) {
-      throw new Error("Error fetching designation");
-    }
+    const designations = await designationRepository.findById(id);
+    if (!designations) throw new Error("Designation not found");
+    return designations;
   }
 
-  
   async getAllDesignations(): Promise<IDesignation[]> {
-    try {
-      return await designationRepository.find({});
-    } catch (error) {
-      throw new Error("Error fetching designations");
-    }
+    return await designationRepository.find({});
   }
 
-  
   async updateDesignation(id: string, data: Partial<IDesignation>): Promise<IDesignation | null> {
-    try {
-      return await designationRepository.findOneAndUpdate({_id:id}, data);
-    } catch (error) {
-      throw new Error("Error updating designation");
-    }
+    return await designationRepository.findOneAndUpdate({ _id: id }, data);
   }
 
-  
   async deleteDesignation(id: string): Promise<boolean> {
-    try {
-      const result = await designationRepository.deleteOne({_id:id});
-      return result.deletedCount > 0; 
-    } catch (error) {
-      throw new Error("Error deleting designation");
-    }
+    const result = await designationRepository.deleteOne({ _id: id });
+    if (result.deletedCount === 0) throw new Error("Designation deletion failed");
+    return true;
   }
 
-  
   async deleteDesignations(filters: {}): Promise<boolean> {
-    try {
-      const result = await designationRepository.deleteMany(filters);
-      return result.deletedCount > 0; 
-    } catch (error) {
-      throw new Error("Error deleting designations");
-    }
+    const result = await designationRepository.deleteMany(filters);
+    if (result.deletedCount === 0) throw new Error("Designations deletion failed");
+    return true;
   }
 }
