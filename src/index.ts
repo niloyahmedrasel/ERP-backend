@@ -27,6 +27,7 @@ app.use(cors());
 dbConnect();
 
 console.log("hi")
+console.log("hello");
 
 app.use(express.json());
 
