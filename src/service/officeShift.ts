@@ -9,14 +9,9 @@ export class OfficeShiftService {
     shiftName: string, 
     startTime: string, 
     endTime: string, 
-    breaks: Array<{ breakName: string, startTime: string, endTime: string }>, 
-    workingDays: string[], 
-    gracePeriod: number, 
-    overtimePolicy: { enabled: boolean, rateMultiplier: number },
     description: string, 
-    isRotational: boolean
   ): Promise<IOfficeShift> {
-    const officeShift = await officeShiftRepository.create({ shiftName, startTime, endTime, breaks, workingDays, gracePeriod, overtimePolicy, description, isRotational });
+    const officeShift = await officeShiftRepository.create({ shiftName, startTime, endTime, description });
     if (!officeShift) {
       throw new Error("Office shift creation failed");
     }
@@ -36,14 +31,9 @@ export class OfficeShiftService {
     shiftName: string, 
     startTime: string, 
     endTime: string, 
-    breaks: Array<{ breakName: string, startTime: string, endTime: string }>, 
-    workingDays: string[], 
-    gracePeriod: number, 
-    overtimePolicy: { enabled: boolean, rateMultiplier: number }, 
     description: string, 
-    isRotational: boolean
   ): Promise<IOfficeShift | null> {
-    const officeShift = await officeShiftRepository.findOneAndUpdate({ _id: id }, { shiftName, startTime, endTime, breaks, workingDays, gracePeriod, overtimePolicy, description, isRotational });
+    const officeShift = await officeShiftRepository.findOneAndUpdate({ _id: id }, { shiftName, startTime, endTime,description });
     if (!officeShift) {
       throw new Error("Office shift update failed");
     }

@@ -1,6 +1,5 @@
 import Joi from "joi";
 
-// Address schema
 const addressSchema = Joi.object({
   street: Joi.string().required(),
   city: Joi.string().required(),

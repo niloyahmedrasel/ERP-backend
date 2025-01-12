@@ -32,12 +32,14 @@ export class PayrollService {
         salaryScaleId.toString()
       );
 
+      const employee = await employeeRepository.findById(employeeId.toString());
+
       console.log(employeesalaryScale);
       if (!employeesalaryScale) {
         throw new Error("Employee salary structure not found");
       }
 
-      if (employeesalaryScale.employeeId.toString() !== employeeId.toString()) {
+      if (employeesalaryScale._id.toString() !== employee?.employmentDetails?.salaryScaleId.toString()) {
         throw new Error(
           "Employee salary structure does not belong to the employee"
         );

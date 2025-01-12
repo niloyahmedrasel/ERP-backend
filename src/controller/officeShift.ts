@@ -7,10 +7,10 @@ export class OfficeShiftController {
 
   // Create a new office shift
   async createOfficeShift(req: Request, res: Response): Promise<void> {
-    const { shiftName, startTime, endTime, breaks, workingDays, gracePeriod, overtimePolicy, description, isRotational } = req.body;
+    const { shiftName, startTime, endTime, description,  } = req.body;
 
     try {
-      const officeShift = await officeShiftService.createOfficeShift(shiftName, startTime, endTime, breaks, workingDays, gracePeriod, overtimePolicy, description, isRotational);
+      const officeShift = await officeShiftService.createOfficeShift(shiftName, startTime, endTime, description);
       res.status(200).json({ data: officeShift });
     } catch (error) {
       res.status(500).json({ message: error instanceof Error ? error.message : 'An unexpected error occurred' });
@@ -46,10 +46,10 @@ export class OfficeShiftController {
   // Update an existing office shift
   async updateOfficeShift(req: Request, res: Response): Promise<void> {
     const { id } = req.params;
-    const { shiftName, startTime, endTime, breaks, workingDays, gracePeriod, overtimePolicy, description, isRotational } = req.body;
+    const { shiftName, startTime, endTime,description } = req.body;
 
     try {
-      const officeShift = await officeShiftService.updateOfficeShift(id, shiftName, startTime, endTime, breaks, workingDays, gracePeriod, overtimePolicy, description, isRotational);
+      const officeShift = await officeShiftService.updateOfficeShift(id, shiftName, startTime, endTime, description);
       if (!officeShift) {
         res.status(404).json({ message: "Office shift not found" });
         return;

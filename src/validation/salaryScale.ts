@@ -3,9 +3,6 @@ import Joi from "joi";
 // Define Joi validation schema for salaryScale
 const salaryScaleValidationSchema = Joi.object({
   title: Joi.string().required(), // Title of the salary structure
-  employeeId: Joi.string()
-    .pattern(/^[0-9a-fA-F]{24}$/)
-    .required(), // Ensure employeeId is a valid ObjectId
   components: Joi.array()
     .items(
       Joi.object({

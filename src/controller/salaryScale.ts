@@ -6,12 +6,11 @@ const salaryScaleService = new SalaryScaleService();
 
 export class SalaryScaleController {
   async createsalaryScale(req: Request, res: Response): Promise<void> {
-    const { title, employeeId, components, description } = req.body;
+    const { title, components, description } = req.body;
 
     try {
       const salaryScale = await salaryScaleService.createsalaryScale(
         title,
-        employeeId,
         components,
         description
       );
@@ -49,13 +48,12 @@ export class SalaryScaleController {
 
   async updatesalaryScale(req: Request, res: Response): Promise<void> {
     const { id } = req.params;
-    const { title, employeeId, components, description } = req.body;
+    const { title, components, description } = req.body;
 
     try {
       const updatedsalaryScale = await salaryScaleService.updatesalaryScale(
         id,
         title,
-        employeeId,
         components,
         description
       );

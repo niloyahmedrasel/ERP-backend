@@ -5,17 +5,5 @@ export interface IOfficeShift extends Document {
   shiftName: string;
   startTime: string;
   endTime: string;
-  breaks: {
-    breakName: string;
-    startTime: string;
-    endTime: string;
-  }[];
-  workingDays: string[];
-  gracePeriod: number;
-  overtimePolicy: {
-    enabled: boolean;
-    rateMultiplier: number;
-  };
   description: string;
-  isRotational: boolean;
 }

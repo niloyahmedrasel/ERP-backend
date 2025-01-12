@@ -4,7 +4,6 @@ import { IsalaryScale } from "./interface/salaryScale";
 const salaryScaleSchema: Schema<IsalaryScale> = new Schema(
   {
     title: { type: String, required: true },
-    employeeId: { type: Schema.Types.ObjectId, ref: "User", required: true },
     components: [
       {
         componentId: {

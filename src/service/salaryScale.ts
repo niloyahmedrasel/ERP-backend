@@ -8,7 +8,6 @@ const salaryScaleRepository = new SalaryScaleRepository();
 export class SalaryScaleService {
   async createsalaryScale(
     title: string,
-    employeeId: Types.ObjectId,
     components: Array<{
       componentId: Types.ObjectId;
       name: string;
@@ -19,7 +18,6 @@ export class SalaryScaleService {
     try {
       const salaryScale = await salaryScaleRepository.create({
         title,
-        employeeId,
         components,
         description,
       });
@@ -48,7 +46,6 @@ export class SalaryScaleService {
   async updatesalaryScale(
     id: string,
     title: string,
-    employeeId: Types.ObjectId,
     components: Array<{
       componentId: Types.ObjectId;
       name: string;
@@ -59,7 +56,7 @@ export class SalaryScaleService {
     try {
       const updatedsalaryScale = await salaryScaleRepository.findOneAndUpdate(
         { _id: id },
-        { title, employeeId, components, description }
+        { title, components, description }
       );
       return updatedsalaryScale;
     } catch (error) {
