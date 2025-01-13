@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import cron from "node-cron";
+import path from "path";
 import { dbConnect } from "./config/db";
 import userRouter from "./routes/user";
 import bankAccountRouter from "./routes/bankAccount";
@@ -26,8 +27,9 @@ const port = 5500;
 app.use(cors());
 dbConnect();
 
-
 app.use(express.json());
+
+app.use("/upload", express.static(path.join(__dirname, "upload")));
 
 app.use("/api/user", userRouter);
 app.use("/api/bankAccount", authenticateToken, bankAccountRouter);
@@ -62,6 +64,6 @@ cron.schedule(
   }
 );
 
-app.listen(port, () => {
+app.listen(port, "0.0.0.0", () => {
   console.log(`Example app listening on port ${port}`);
 });

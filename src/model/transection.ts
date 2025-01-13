@@ -3,6 +3,7 @@ import { ITransaction } from './interface/transection';
 
 const transactionSchema: Schema<ITransaction> = new Schema(
   {
+    title: { type: String, required: true },
     transactionCategoryId: { type: Schema.Types.ObjectId, ref: 'TransectionCategory', required: true },
     bankAccountId: { type: Schema.Types.ObjectId, ref: 'BankAccount', required: true },
     amount: { type: Number, required: true },

@@ -12,5 +12,5 @@ const transactionSchema: Schema<ITransectionCategory> = new Schema(
   }
 );
 
-const TransactionModel = mongoose.model<ITransectionCategory & Document>('TransectionCategory', transactionSchema);
-export default TransactionModel;
+const TransactionCategoryModel = mongoose.model<ITransectionCategory & Document>('TransectionCategory', transactionSchema);
+export default TransactionCategoryModel;

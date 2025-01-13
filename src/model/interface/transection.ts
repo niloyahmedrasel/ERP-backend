@@ -2,6 +2,7 @@ import { Types, Document } from 'mongoose';
 
 export interface ITransaction extends Document {
   _id: Types.ObjectId;
+  title: string;
   transactionCategoryId: Types.ObjectId;
   bankAccountId: Types.ObjectId;
   amount: number;
