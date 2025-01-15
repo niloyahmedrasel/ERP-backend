@@ -29,7 +29,7 @@ dbConnect();
 
 app.use(express.json());
 
-app.use("/upload", express.static(path.join(__dirname, "upload")));
+app.use("/upload", express.static(path.join(__dirname, "public/upload")));
 
 app.use("/api/user", userRouter);
 app.use("/api/bankAccount", authenticateToken, bankAccountRouter);
