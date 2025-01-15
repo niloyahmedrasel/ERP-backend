@@ -6,7 +6,7 @@ import { Request } from 'express';
 const storage = multer.diskStorage({
   destination: (req: Request, file: any, cb: any) => {
     // Use path.join for cross-platform compatibility
-    cb(null, path.join(__dirname, '../upload')); // Directory where files will be stored
+    cb(null, path.join(__dirname, '../../public/upload')); // Directory where files will be stored
   },
   filename: (req: Request, file: any, cb: any) => {
     cb(null, file.originalname);
