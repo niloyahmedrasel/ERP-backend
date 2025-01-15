@@ -21,6 +21,7 @@ import taskRouter from "./routes/task";
 import ticketRouter from "./routes/ticket";
 import authenticateToken from "./middleware/auth";
 
+
 const app = express();
 const port = 5500;
 
@@ -29,7 +30,7 @@ dbConnect();
 
 app.use(express.json());
 
-app.use("/upload", express.static(path.join(__dirname, "public/upload")));
+app.use("/upload", express.static(path.join(__dirname, "../public/upload")));
 
 app.use("/api/user", userRouter);
 app.use("/api/bankAccount", authenticateToken, bankAccountRouter);
