@@ -1,6 +1,7 @@
 // controllers/transactionController.ts
 import { Request, Response } from 'express';
 import { TransactionService } from '../service/transection';
+import { AppError } from '../utils/appError';
 
 const transactionService = new TransactionService();
 
@@ -33,9 +34,11 @@ export class TransactionController {
       );
       res.status(201).json({ data: transaction });
     } catch (error) {
-      console.log(error);
-      res.status(500).json({ message: 'Error creating transaction'});
-    }
+          const statusCode = error instanceof AppError ? error.statusCode : 500;
+          const message = error instanceof AppError? error.message: "An unexpected error occurred";
+    
+          res.status(statusCode).json({ errorCode: statusCode === 500 ? 500 : statusCode, message });
+        }
   }
 
   // Get all transactions
@@ -44,7 +47,10 @@ export class TransactionController {
       const transactions = await transactionService.getTransactions();
       res.status(200).json({ data: transactions });
     } catch (error) {
-      res.status(500).json({ message: 'Error fetching transactions' });
+      const statusCode = error instanceof AppError ? error.statusCode : 500;
+      const message = error instanceof AppError? error.message: "An unexpected error occurred";
+
+      res.status(statusCode).json({ errorCode: statusCode === 500 ? 500 : statusCode, message });
     }
   }
 
@@ -60,7 +66,10 @@ export class TransactionController {
       }
       res.status(200).json({ data: transaction });
     } catch (error) {
-      res.status(500).json({ message: 'Error fetching transaction'});
+      const statusCode = error instanceof AppError ? error.statusCode : 500;
+      const message = error instanceof AppError? error.message: "An unexpected error occurred";
+
+      res.status(statusCode).json({ errorCode: statusCode === 500 ? 500 : statusCode, message });
     }
   }
 
@@ -73,8 +82,10 @@ export class TransactionController {
     const transactions = await transactionService.getTransectionByType(transectionType);
     res.status(200).json({ data: transactions });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: 'Error fetching transactions' });
+    const statusCode = error instanceof AppError ? error.statusCode : 500;
+    const message = error instanceof AppError? error.message: "An unexpected error occurred";
+
+    res.status(statusCode).json({ errorCode: statusCode === 500 ? 500 : statusCode, message });
   }
   }
   // Update a transaction
@@ -115,7 +126,10 @@ export class TransactionController {
       }
       res.status(200).json({ data: transaction });
     } catch (error) {
-      res.status(500).json({ message: 'Error updating transaction' });
+      const statusCode = error instanceof AppError ? error.statusCode : 500;
+      const message = error instanceof AppError? error.message: "An unexpected error occurred";
+
+      res.status(statusCode).json({ errorCode: statusCode === 500 ? 500 : statusCode, message });
     }
   }
 
@@ -131,7 +145,10 @@ export class TransactionController {
       }
       res.status(200).json({ message: 'Transaction deleted successfully' });
     } catch (error) {
-      res.status(500).json({ message: 'Error deleting transaction' });
+      const statusCode = error instanceof AppError ? error.statusCode : 500;
+      const message = error instanceof AppError? error.message: "An unexpected error occurred";
+
+      res.status(statusCode).json({ errorCode: statusCode === 500 ? 500 : statusCode, message });
     }
   }
 
@@ -140,8 +157,11 @@ export class TransactionController {
     try{
       const transectionCategory = await transactionService.createTransectionCategory(transectionType,categoryName);
       res.status(200).json({ data: transectionCategory });
-    }catch(error){
-      res.status(500).json({ message: 'Error fetching transactions' });
+    } catch (error) {
+      const statusCode = error instanceof AppError ? error.statusCode : 500;
+      const message = error instanceof AppError? error.message: "An unexpected error occurred";
+
+      res.status(statusCode).json({ errorCode: statusCode === 500 ? 500 : statusCode, message });
     }
   }
 
@@ -150,9 +170,11 @@ export class TransactionController {
     try{
       const transectionCategory = await transactionService.getTransectionCategory(transectionType);
       res.status(200).json({ data: transectionCategory });
-    }catch(error){
-      console.log(error)
-      res.status(500).json({ message: 'Error fetching transactions' });
+    } catch (error) {
+      const statusCode = error instanceof AppError ? error.statusCode : 500;
+      const message = error instanceof AppError? error.message: "An unexpected error occurred";
+
+      res.status(statusCode).json({ errorCode: statusCode === 500 ? 500 : statusCode, message });
     }
   }
 }

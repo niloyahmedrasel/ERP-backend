@@ -1,6 +1,7 @@
-import { Request, Response } from 'express';
-import { TicketService } from '../service/ticket';
-import mongoose from 'mongoose';
+import { Request, Response } from "express";
+import { TicketService } from "../service/ticket";
+import mongoose from "mongoose";
+import { AppError } from "../utils/appError";
 
 const ticketService = new TicketService();
 
@@ -9,11 +10,23 @@ export class TicketController {
     try {
       const { title, projectId, description, assignedTo, priority } = req.body;
       const newTicket = await ticketService.createTicket(
-        title, projectId, description, assignedTo, priority
+        title,
+        projectId,
+        description,
+        assignedTo,
+        priority
       );
       res.status(201).json({ data: newTicket });
     } catch (error) {
-      res.status(500).json({ message: error instanceof Error ? error.message : 'An unexpected error occurred' });
+      const statusCode = error instanceof AppError ? error.statusCode : 500;
+      const message =
+        error instanceof AppError
+          ? error.message
+          : "An unexpected error occurred";
+
+      res
+        .status(statusCode)
+        .json({ errorCode: statusCode === 500 ? 500 : statusCode, message });
     }
   }
 
@@ -22,28 +35,56 @@ export class TicketController {
       const tickets = await ticketService.getTickets();
       res.status(200).json({ data: tickets });
     } catch (error) {
-      res.status(500).json({ message: error instanceof Error ? error.message : 'An unexpected error occurred' });
+      const statusCode = error instanceof AppError ? error.statusCode : 500;
+      const message =
+        error instanceof AppError
+          ? error.message
+          : "An unexpected error occurred";
+
+      res
+        .status(statusCode)
+        .json({ errorCode: statusCode === 500 ? 500 : statusCode, message });
     }
   }
-
 
   async getTicketById(req: Request, res: Response): Promise<void> {
     try {
       const ticketId = req.params.ticketId;
-      const ticket = await ticketService.getTicketById(new mongoose.Types.ObjectId(ticketId));
+      const ticket = await ticketService.getTicketById(
+        new mongoose.Types.ObjectId(ticketId)
+      );
       res.status(200).json({ data: ticket });
     } catch (error) {
-      res.status(500).json({ message: error instanceof Error ? error.message : 'An unexpected error occurred' });
+      const statusCode = error instanceof AppError ? error.statusCode : 500;
+      const message =
+        error instanceof AppError
+          ? error.message
+          : "An unexpected error occurred";
+
+      res
+        .status(statusCode)
+        .json({ errorCode: statusCode === 500 ? 500 : statusCode, message });
     }
   }
   async updateTicket(req: Request, res: Response): Promise<void> {
     try {
       const ticketId = req.params.ticketId;
       const updatedTicketData = req.body;
-      const updatedTicket = await ticketService.updateTicket(ticketId, updatedTicketData);
+      const updatedTicket = await ticketService.updateTicket(
+        ticketId,
+        updatedTicketData
+      );
       res.status(200).json({ data: updatedTicket });
     } catch (error) {
-      res.status(500).json({ message: error instanceof Error ? error.message : 'An unexpected error occurred' });
+      const statusCode = error instanceof AppError ? error.statusCode : 500;
+      const message =
+        error instanceof AppError
+          ? error.message
+          : "An unexpected error occurred";
+
+      res
+        .status(statusCode)
+        .json({ errorCode: statusCode === 500 ? 500 : statusCode, message });
     }
   }
 
@@ -53,7 +94,15 @@ export class TicketController {
       await ticketService.deleteTicket(ticketId);
       res.status(200).json({ message: "Ticket deleted successfully" });
     } catch (error) {
-      res.status(500).json({ message: error instanceof Error ? error.message : 'An unexpected error occurred' });
+      const statusCode = error instanceof AppError ? error.statusCode : 500;
+      const message =
+        error instanceof AppError
+          ? error.message
+          : "An unexpected error occurred";
+
+      res
+        .status(statusCode)
+        .json({ errorCode: statusCode === 500 ? 500 : statusCode, message });
     }
   }
 }

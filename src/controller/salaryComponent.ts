@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { SalaryComponentService } from '../service/salaryComponent';
+import { AppError } from '../utils/appError';
 
 const salaryComponentService = new SalaryComponentService();
 
@@ -13,8 +14,11 @@ export class SalaryComponentController {
       const salaryComponent = await salaryComponentService.createSalaryComponent(name, type, calculationMethod, isTaxable, description);
       res.status(200).json({ data: salaryComponent });
     } catch (error) {
-      res.status(500).json({ message: 'Error creating salary component' });
-    }
+          const statusCode = error instanceof AppError ? error.statusCode : 500;
+          const message = error instanceof AppError? error.message: "An unexpected error occurred";
+    
+          res.status(statusCode).json({ errorCode: statusCode === 500 ? 500 : statusCode, message });
+        }
   }
 
   
@@ -23,7 +27,10 @@ export class SalaryComponentController {
       const salaryComponents = await salaryComponentService.getSalaryComponents();
       res.status(200).json({ data: salaryComponents });
     } catch (error) {
-      res.status(500).json({ message: 'Error fetching salary components' });
+      const statusCode = error instanceof AppError ? error.statusCode : 500;
+      const message = error instanceof AppError? error.message: "An unexpected error occurred";
+
+      res.status(statusCode).json({ errorCode: statusCode === 500 ? 500 : statusCode, message });
     }
   }
 
@@ -39,7 +46,10 @@ export class SalaryComponentController {
         res.status(200).json({ data: salaryComponent });
       }
     } catch (error) {
-      res.status(500).json({ message: 'Error fetching salary component by ID' });
+      const statusCode = error instanceof AppError ? error.statusCode : 500;
+      const message = error instanceof AppError? error.message: "An unexpected error occurred";
+
+      res.status(statusCode).json({ errorCode: statusCode === 500 ? 500 : statusCode, message });
     }
   }
 
@@ -52,7 +62,10 @@ export class SalaryComponentController {
       const salaryComponent = await salaryComponentService.updateSalaryComponent(id, name, type, calculationMethod, isTaxable, description);
       res.status(200).json({ data: salaryComponent });
     } catch (error) {
-      res.status(500).json({ message: 'Error updating salary component' });
+      const statusCode = error instanceof AppError ? error.statusCode : 500;
+      const message = error instanceof AppError? error.message: "An unexpected error occurred";
+
+      res.status(statusCode).json({ errorCode: statusCode === 500 ? 500 : statusCode, message });
     }
   }
 
@@ -64,7 +77,10 @@ export class SalaryComponentController {
       await salaryComponentService.deleteSalaryComponent(id);
       res.status(200).json({ message: 'Salary component deleted successfully' });
     } catch (error) {
-      res.status(500).json({ message: 'Error deleting salary component' });
+      const statusCode = error instanceof AppError ? error.statusCode : 500;
+      const message = error instanceof AppError? error.message: "An unexpected error occurred";
+
+      res.status(statusCode).json({ errorCode: statusCode === 500 ? 500 : statusCode, message });
     }
   }
 }

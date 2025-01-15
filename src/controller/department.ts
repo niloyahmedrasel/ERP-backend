@@ -1,18 +1,29 @@
 import { Request, Response } from "express";
 import { DepartmentService } from "../service/department";
+import { AppError } from "../utils/appError";
 
 const departmentService = new DepartmentService();
 
 export class DepartmentController {
-
   async createDepartment(req: Request, res: Response): Promise<void> {
     const { name, description } = req.body;
 
     try {
-      const department = await departmentService.createDepartment(name, description);
+      const department = await departmentService.createDepartment(
+        name,
+        description
+      );
       res.status(200).json({ data: department });
     } catch (error) {
-      res.status(500).json({ message: error instanceof Error ? error.message : 'An unexpected error occurred' });
+      const statusCode = error instanceof AppError ? error.statusCode : 500;
+      const message =
+        error instanceof AppError
+          ? error.message
+          : "An unexpected error occurred";
+
+      res
+        .status(statusCode)
+        .json({ errorCode: statusCode === 500 ? 500 : statusCode, message });
     }
   }
 
@@ -21,7 +32,15 @@ export class DepartmentController {
       const departments = await departmentService.getDepartments();
       res.status(200).json({ data: departments });
     } catch (error) {
-      res.status(500).json({ message: error instanceof Error ? error.message : 'An unexpected error occurred' });
+      const statusCode = error instanceof AppError ? error.statusCode : 500;
+      const message =
+        error instanceof AppError
+          ? error.message
+          : "An unexpected error occurred";
+
+      res
+        .status(statusCode)
+        .json({ errorCode: statusCode === 500 ? 500 : statusCode, message });
     }
   }
 
@@ -30,10 +49,22 @@ export class DepartmentController {
     const { name, description } = req.body;
 
     try {
-      const department = await departmentService.updateDepartment(id, name, description);
+      const department = await departmentService.updateDepartment(
+        id,
+        name,
+        description
+      );
       res.status(200).json({ data: department });
     } catch (error) {
-      res.status(500).json({ message: error instanceof Error ? error.message : 'An unexpected error occurred' });
+      const statusCode = error instanceof AppError ? error.statusCode : 500;
+      const message =
+        error instanceof AppError
+          ? error.message
+          : "An unexpected error occurred";
+
+      res
+        .status(statusCode)
+        .json({ errorCode: statusCode === 500 ? 500 : statusCode, message });
     }
   }
 
@@ -44,7 +75,15 @@ export class DepartmentController {
       await departmentService.deleteDepartment(id);
       res.status(200).json({ message: "Department deleted successfully" });
     } catch (error) {
-      res.status(500).json({ message: error instanceof Error ? error.message : 'An unexpected error occurred' });
+      const statusCode = error instanceof AppError ? error.statusCode : 500;
+      const message =
+        error instanceof AppError
+          ? error.message
+          : "An unexpected error occurred";
+
+      res
+        .status(statusCode)
+        .json({ errorCode: statusCode === 500 ? 500 : statusCode, message });
     }
   }
 }

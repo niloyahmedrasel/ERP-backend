@@ -2,7 +2,7 @@
 import { Request, Response } from "express";
 import { PayrollService } from "../service/payRoll";
 import { IPayroll } from "../model/interface/payRoll";
-
+import { AppError } from "../utils/appError";
 
 const payrollService = new PayrollService();
 
@@ -19,10 +19,17 @@ export class PayrollController {
         componentsBreakdown
       );
       res.status(200).json({ data: payroll });
-    } catch (error: any) {
-      console.error('Error in createPayroll:', error);  
-      res.status(500).json({ message: error instanceof Error ? error.message : 'An unexpected error occurred' });
-  }
+    } catch (error) {
+      const statusCode = error instanceof AppError ? error.statusCode : 500;
+      const message =
+        error instanceof AppError
+          ? error.message
+          : "An unexpected error occurred";
+
+      res
+        .status(statusCode)
+        .json({ errorCode: statusCode === 500 ? 500 : statusCode, message });
+    }
   }
 
   async getPayrolls(req: Request, res: Response): Promise<any> {
@@ -30,7 +37,15 @@ export class PayrollController {
       const payrolls = await payrollService.getPayrolls();
       res.status(200).json({ data: payrolls });
     } catch (error) {
-      res.status(500).json({ message: error instanceof Error ? error.message : 'An unexpected error occurred' });
+      const statusCode = error instanceof AppError ? error.statusCode : 500;
+      const message =
+        error instanceof AppError
+          ? error.message
+          : "An unexpected error occurred";
+
+      res
+        .status(statusCode)
+        .json({ errorCode: statusCode === 500 ? 500 : statusCode, message });
     }
   }
 
@@ -45,7 +60,15 @@ export class PayrollController {
         res.status(200).json({ data: payroll });
       }
     } catch (error) {
-      res.status(500).json({ message: error instanceof Error ? error.message : 'An unexpected error occurred' });
+      const statusCode = error instanceof AppError ? error.statusCode : 500;
+      const message =
+        error instanceof AppError
+          ? error.message
+          : "An unexpected error occurred";
+
+      res
+        .status(statusCode)
+        .json({ errorCode: statusCode === 500 ? 500 : statusCode, message });
     }
   }
 
@@ -78,7 +101,10 @@ export class PayrollController {
         res.status(200).json({ data: updatedPayroll });
       }
     } catch (error) {
-      res.status(500).json({ message: error instanceof Error ? error.message : 'An unexpected error occurred' });
+      const statusCode = error instanceof AppError ? error.statusCode : 500;
+      const message = error instanceof AppError? error.message: "An unexpected error occurred";
+
+      res.status(statusCode).json({ errorCode: statusCode === 500 ? 500 : statusCode, message });
     }
   }
 
@@ -93,7 +119,15 @@ export class PayrollController {
         res.status(200).json({ message: "Payroll deleted successfully" });
       }
     } catch (error) {
-      res.status(500).json({ message: error instanceof Error ? error.message : 'An unexpected error occurred' });
+      const statusCode = error instanceof AppError ? error.statusCode : 500;
+      const message =
+        error instanceof AppError
+          ? error.message
+          : "An unexpected error occurred";
+
+      res
+        .status(statusCode)
+        .json({ errorCode: statusCode === 500 ? 500 : statusCode, message });
     }
   }
 }

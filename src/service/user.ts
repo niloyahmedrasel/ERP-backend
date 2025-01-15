@@ -9,6 +9,7 @@ import {
 } from "../model/interface/user";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { AppError } from "../utils/appError";
 const employeeRepository = new EmployeeRepository();
 
 export class UserService {
@@ -49,7 +50,7 @@ export class UserService {
       });
 
       if(!employee){
-        throw new Error("user not created")
+        throw new AppError("user not created", 400)
       }
       console.log("user----------------------", employee)
       return employee;
@@ -62,7 +63,7 @@ export class UserService {
       const user = await employeeRepository.findById(userId);
       return user;
     } catch (error) {
-      throw new Error("Error fetching user: ");
+      throw new AppError("user not found",200);
     }
   }
 
@@ -79,7 +80,7 @@ export class UserService {
       );
       return updatedUser;
     } catch (error) {
-      throw new Error("Error updating user");
+      throw new AppError("user not updated", 400);
     }
 }
 
@@ -90,7 +91,7 @@ export class UserService {
       const deletedUser = await employeeRepository.deleteById(userId);
       return deletedUser;
     } catch (error) {
-      throw new Error("Error deleting user: ");
+      throw new AppError("user not found",200);
     }
   }
 

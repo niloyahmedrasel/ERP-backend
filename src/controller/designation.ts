@@ -1,19 +1,30 @@
 import { Request, Response } from "express";
 import { DesignationService } from "../service/designation";
+import { AppError } from "../utils/appError";
 
 const designationService = new DesignationService();
 
 export class DesignationController {
-
   // Create a new designation
   async createDesignation(req: Request, res: Response): Promise<void> {
     const { title, description } = req.body;
 
     try {
-      const designation = await designationService.createDesignation( title, description );
+      const designation = await designationService.createDesignation(
+        title,
+        description
+      );
       res.status(200).json({ data: designation });
     } catch (error) {
-      res.status(500).json({ message: error instanceof Error ? error.message : 'An unexpected error occurred' });
+      const statusCode = error instanceof AppError ? error.statusCode : 500;
+      const message =
+        error instanceof AppError
+          ? error.message
+          : "An unexpected error occurred";
+
+      res
+        .status(statusCode)
+        .json({ errorCode: statusCode === 500 ? 500 : statusCode, message });
     }
   }
 
@@ -29,7 +40,15 @@ export class DesignationController {
         res.status(200).json({ data: designation });
       }
     } catch (error) {
-      res.status(500).json({ message: error instanceof Error ? error.message : 'An unexpected error occurred' });
+      const statusCode = error instanceof AppError ? error.statusCode : 500;
+      const message =
+        error instanceof AppError
+          ? error.message
+          : "An unexpected error occurred";
+
+      res
+        .status(statusCode)
+        .json({ errorCode: statusCode === 500 ? 500 : statusCode, message });
     }
   }
 
@@ -39,25 +58,44 @@ export class DesignationController {
       const designations = await designationService.getAllDesignations();
       res.status(200).json({ data: designations });
     } catch (error) {
-      res.status(500).json({ message: error instanceof Error ? error.message : 'An unexpected error occurred' });
+      const statusCode = error instanceof AppError ? error.statusCode : 500;
+      const message =
+        error instanceof AppError
+          ? error.message
+          : "An unexpected error occurred";
+
+      res
+        .status(statusCode)
+        .json({ errorCode: statusCode === 500 ? 500 : statusCode, message });
     }
   }
 
   // Update a designation by ID
   async updateDesignation(req: Request, res: Response): Promise<void> {
-    const id  = req.params.id;
+    const id = req.params.id;
     const { title, description } = req.body;
-    console.log(id)
+    console.log(id);
 
     try {
-      const updatedDesignation = await designationService.updateDesignation(id, { title, description });
+      const updatedDesignation = await designationService.updateDesignation(
+        id,
+        { title, description }
+      );
       if (!updatedDesignation) {
         res.status(404).json({ message: "Designation not found" });
       } else {
         res.status(200).json({ data: updatedDesignation });
       }
     } catch (error) {
-      res.status(500).json({ message: error instanceof Error ? error.message : 'An unexpected error occurred' });
+      const statusCode = error instanceof AppError ? error.statusCode : 500;
+      const message =
+        error instanceof AppError
+          ? error.message
+          : "An unexpected error occurred";
+
+      res
+        .status(statusCode)
+        .json({ errorCode: statusCode === 500 ? 500 : statusCode, message });
     }
   }
 
@@ -73,7 +111,15 @@ export class DesignationController {
         res.status(404).json({ message: "Designation not found" });
       }
     } catch (error) {
-      res.status(500).json({ message: error instanceof Error ? error.message : 'An unexpected error occurred' });
+      const statusCode = error instanceof AppError ? error.statusCode : 500;
+      const message =
+        error instanceof AppError
+          ? error.message
+          : "An unexpected error occurred";
+
+      res
+        .status(statusCode)
+        .json({ errorCode: statusCode === 500 ? 500 : statusCode, message });
     }
   }
 
@@ -89,7 +135,15 @@ export class DesignationController {
         res.status(404).json({ message: "No designations found to delete" });
       }
     } catch (error) {
-      res.status(500).json({ message: error instanceof Error ? error.message : 'An unexpected error occurred' });
+      const statusCode = error instanceof AppError ? error.statusCode : 500;
+      const message =
+        error instanceof AppError
+          ? error.message
+          : "An unexpected error occurred";
+
+      res
+        .status(statusCode)
+        .json({ errorCode: statusCode === 500 ? 500 : statusCode, message });
     }
   }
 }

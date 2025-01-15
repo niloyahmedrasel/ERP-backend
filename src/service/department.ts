@@ -1,5 +1,6 @@
 import { IDepartment } from "../model/interface/department";
 import { DepartmentRepository } from "../repository/department";
+import { AppError } from "../utils/appError";
 
 const departmentRepository = new DepartmentRepository();
 
@@ -8,7 +9,7 @@ export class DepartmentService {
     
       const department = await departmentRepository.create({ name, description });
       if (!department) {
-        throw new Error("Department creation failed");
+        throw new AppError("Department creation failed",402);
       }
       return department;
     
@@ -17,7 +18,7 @@ export class DepartmentService {
   async getDepartments(): Promise<IDepartment[]> {
    
       const departements =  await departmentRepository.find({});
-      if(!departements) throw new Error("Departments not found");
+      if(!departements) throw new AppError("Departments not found",404);
       return departements;
   }
 
@@ -25,7 +26,7 @@ export class DepartmentService {
   
       const department = await departmentRepository.findOneAndUpdate({_id:id}, { name, description });
       if (!department) {
-        throw new Error("Department update failed");
+        throw new AppError("Department update failed",400);
       }
       return department;
   }
@@ -34,6 +35,6 @@ export class DepartmentService {
     
       const deleted = await departmentRepository.deleteOne({ _id: id });
 
-      if(!deleted) throw new Error("Department deletion failed");
+      if(!deleted) throw new AppError("Department not found",404);
   }
 }

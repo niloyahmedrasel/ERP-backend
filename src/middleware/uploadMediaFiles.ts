@@ -9,9 +9,8 @@ const storage = multer.diskStorage({
     cb(null, path.join(__dirname, '../upload')); // Directory where files will be stored
   },
   filename: (req: Request, file: any, cb: any) => {
-    // Generate a unique filename with a timestamp
-    cb(null, `${Date.now()}-${file.originalname}`);
-  }
+    cb(null, file.originalname);
+  },
 });
 
 // Multer instance with the storage configuration

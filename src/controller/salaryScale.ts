@@ -1,6 +1,7 @@
 // controllers/salaryScaleController.ts
 import { Request, Response } from "express";
 import { SalaryScaleService } from "../service/salaryScale";
+import { AppError } from "../utils/appError";
 
 const salaryScaleService = new SalaryScaleService();
 
@@ -16,8 +17,11 @@ export class SalaryScaleController {
       );
       res.status(200).json({ data: salaryScale });
     } catch (error) {
-      res.status(500).json({ message: "Error creating salary structure" });
-    }
+          const statusCode = error instanceof AppError ? error.statusCode : 500;
+          const message = error instanceof AppError? error.message: "An unexpected error occurred";
+    
+          res.status(statusCode).json({ errorCode: statusCode === 500 ? 500 : statusCode, message });
+        }
   }
 
   async getsalaryScales(req: Request, res: Response): Promise<void> {
@@ -25,7 +29,10 @@ export class SalaryScaleController {
       const salaryScales = await salaryScaleService.getsalaryScales();
       res.status(200).json({ data: salaryScales });
     } catch (error) {
-      res.status(500).json({ message: "Error fetching salary structures" });
+      const statusCode = error instanceof AppError ? error.statusCode : 500;
+      const message = error instanceof AppError? error.message: "An unexpected error occurred";
+
+      res.status(statusCode).json({ errorCode: statusCode === 500 ? 500 : statusCode, message });
     }
   }
 
@@ -40,9 +47,10 @@ export class SalaryScaleController {
         res.status(200).json({ data: salaryScale });
       }
     } catch (error) {
-      res
-        .status(500)
-        .json({ message: "Error fetching salary structure by ID" });
+      const statusCode = error instanceof AppError ? error.statusCode : 500;
+      const message = error instanceof AppError? error.message: "An unexpected error occurred";
+
+      res.status(statusCode).json({ errorCode: statusCode === 500 ? 500 : statusCode, message });
     }
   }
 
@@ -59,7 +67,10 @@ export class SalaryScaleController {
       );
       res.status(200).json({ data: updatedsalaryScale });
     } catch (error) {
-      res.status(500).json({ message: "Error updating salary structure" });
+      const statusCode = error instanceof AppError ? error.statusCode : 500;
+      const message = error instanceof AppError? error.message: "An unexpected error occurred";
+
+      res.status(statusCode).json({ errorCode: statusCode === 500 ? 500 : statusCode, message });
     }
   }
 
@@ -72,7 +83,10 @@ export class SalaryScaleController {
         .status(200)
         .json({ message: "Salary structure deleted successfully" });
     } catch (error) {
-      res.status(500).json({ message: "Error deleting salary structure" });
+      const statusCode = error instanceof AppError ? error.statusCode : 500;
+      const message = error instanceof AppError? error.message: "An unexpected error occurred";
+
+      res.status(statusCode).json({ errorCode: statusCode === 500 ? 500 : statusCode, message });
     }
   }
 }

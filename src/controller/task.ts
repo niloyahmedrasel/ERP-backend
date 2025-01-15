@@ -2,6 +2,7 @@ import { ITask } from "../model/interface/task";
 import { TaskService } from "../service/task";
 import { Request, Response } from "express";
 import mongoose from "mongoose";
+import { AppError } from "../utils/appError";
 
 const taskService = new TaskService();
 export class TaskController {
@@ -12,10 +13,12 @@ export class TaskController {
       const response = await taskService.createTask(title,description,relatedTo,projectId,ticketId,milestoneId,assignedTo,priority,startDate,endDate,comments);
 
       res.status(200).json({ data: response });
-    }catch(error){
-      const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
-      res.status(500).json({ message: errorMessage });
-    }
+    } catch (error) {
+          const statusCode = error instanceof AppError ? error.statusCode : 500;
+          const message = error instanceof AppError? error.message: "An unexpected error occurred";
+    
+          res.status(statusCode).json({ errorCode: statusCode === 500 ? 500 : statusCode, message });
+        }
   }
 
   async getTasks(req: Request, res: Response): Promise<void> {
@@ -23,8 +26,10 @@ export class TaskController {
       const tasks = await taskService.getTasks();
       res.status(200).json({ data: tasks });
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
-      res.status(500).json({ message: errorMessage });
+      const statusCode = error instanceof AppError ? error.statusCode : 500;
+      const message = error instanceof AppError? error.message: "An unexpected error occurred";
+
+      res.status(statusCode).json({ errorCode: statusCode === 500 ? 500 : statusCode, message });
     }
   }
 
@@ -36,9 +41,10 @@ export class TaskController {
       res.status(200).json({ data: tasks });
 
     } catch (error) {
-      console.log(error)
-      const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
-      res.status(500).json({ message: errorMessage });
+      const statusCode = error instanceof AppError ? error.statusCode : 500;
+      const message = error instanceof AppError? error.message: "An unexpected error occurred";
+
+      res.status(statusCode).json({ errorCode: statusCode === 500 ? 500 : statusCode, message });
     }
   }
 
@@ -49,9 +55,11 @@ export class TaskController {
       const response = await taskService.updateTask(taskId, updatedTask);
       res.status(200).json({ data: response });
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
-      res.status(500).json({ message: errorMessage });
-  }
+      const statusCode = error instanceof AppError ? error.statusCode : 500;
+      const message = error instanceof AppError? error.message: "An unexpected error occurred";
+
+      res.status(statusCode).json({ errorCode: statusCode === 500 ? 500 : statusCode, message });
+    }
  }
 
  async deleteTask(req: Request, res: Response): Promise<void> {
@@ -60,8 +68,10 @@ export class TaskController {
     const response = await taskService.deleteTask(taskId);
     res.status(200).json({ data: response });
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
-      res.status(500).json({ message: errorMessage });
+    const statusCode = error instanceof AppError ? error.statusCode : 500;
+    const message = error instanceof AppError? error.message: "An unexpected error occurred";
+
+    res.status(statusCode).json({ errorCode: statusCode === 500 ? 500 : statusCode, message });
   }
 }
 }

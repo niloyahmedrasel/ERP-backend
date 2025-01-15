@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { ProjectService } from "../service/project";
+import { AppError } from "../utils/appError";
 
 const projectService = new ProjectService();
 export class ProjectController {
@@ -11,8 +12,11 @@ export class ProjectController {
 
       res.status(200).json({ data: response });
     } catch (error) {
-      res.status(500).json({ message: error });
-    }
+          const statusCode = error instanceof AppError ? error.statusCode : 500;
+          const message = error instanceof AppError? error.message: "An unexpected error occurred";
+    
+          res.status(statusCode).json({ errorCode: statusCode === 500 ? 500 : statusCode, message });
+        }
   }
 
   async createMileStone (req: Request, res: Response) {
@@ -24,7 +28,10 @@ export class ProjectController {
 
      res.status(200).json({ data: response });
     } catch (error) {
-      res.status(500).json({ message: error });
+      const statusCode = error instanceof AppError ? error.statusCode : 500;
+      const message = error instanceof AppError? error.message: "An unexpected error occurred";
+
+      res.status(statusCode).json({ errorCode: statusCode === 500 ? 500 : statusCode, message });
     }
   }
 
@@ -33,7 +40,10 @@ export class ProjectController {
       const response = await projectService.getProjects();
       res.status(200).json({ data: response });
     } catch (error) {
-      res.status(500).json({ message: error });
+      const statusCode = error instanceof AppError ? error.statusCode : 500;
+      const message = error instanceof AppError? error.message: "An unexpected error occurred";
+
+      res.status(statusCode).json({ errorCode: statusCode === 500 ? 500 : statusCode, message });
     }
   }
 
@@ -43,7 +53,10 @@ export class ProjectController {
       const response = await projectService.getSingleProject(projectId);
       res.status(200).json({ data: response });
     } catch (error) {
-      res.status(500).json({ message: error });
+      const statusCode = error instanceof AppError ? error.statusCode : 500;
+      const message = error instanceof AppError? error.message: "An unexpected error occurred";
+
+      res.status(statusCode).json({ errorCode: statusCode === 500 ? 500 : statusCode, message });
     }
   }
 
@@ -54,7 +67,10 @@ export class ProjectController {
       const response = await projectService.updateProject(projectId, name, description, startDate, endDate, status);
       res.status(200).json({ data: response });
     } catch (error) {
-      res.status(500).json({ message: error });
+      const statusCode = error instanceof AppError ? error.statusCode : 500;
+      const message = error instanceof AppError? error.message: "An unexpected error occurred";
+
+      res.status(statusCode).json({ errorCode: statusCode === 500 ? 500 : statusCode, message });
     }
   }
 
@@ -64,7 +80,10 @@ export class ProjectController {
       const response = await projectService.deleteProject(projectId);
       res.status(200).json({ data: response });
     } catch (error) {
-      res.status(500).json({ message: error });
+      const statusCode = error instanceof AppError ? error.statusCode : 500;
+      const message = error instanceof AppError? error.message: "An unexpected error occurred";
+
+      res.status(statusCode).json({ errorCode: statusCode === 500 ? 500 : statusCode, message });
     }
   }
 }

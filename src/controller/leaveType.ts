@@ -1,33 +1,50 @@
 import { Request, Response } from "express";
 import { LeaveTypeService } from "../service/leaveType";
+import { AppError } from "../utils/appError";
 
 const leaveTypeService = new LeaveTypeService();
 
 export class LeaveTypeController {
-
-  
   async createLeaveType(req: Request, res: Response): Promise<void> {
     const { typeName, description, maxDaysPerYear } = req.body;
 
     try {
-      const leaveType = await leaveTypeService.createLeaveType(typeName, description, maxDaysPerYear);
+      const leaveType = await leaveTypeService.createLeaveType(
+        typeName,
+        description,
+        maxDaysPerYear
+      );
       res.status(200).json({ data: leaveType });
     } catch (error) {
-      res.status(500).json({ message: error instanceof Error ? error.message : 'An unexpected error occurred' });
+      const statusCode = error instanceof AppError ? error.statusCode : 500;
+      const message =
+        error instanceof AppError
+          ? error.message
+          : "An unexpected error occurred";
+
+      res
+        .status(statusCode)
+        .json({ errorCode: statusCode === 500 ? 500 : statusCode, message });
     }
   }
 
-  
   async getLeaveTypes(req: Request, res: Response): Promise<void> {
     try {
       const leaveTypes = await leaveTypeService.getLeaveTypes();
       res.status(200).json({ data: leaveTypes });
     } catch (error) {
-      res.status(500).json({ message: error instanceof Error ? error.message : 'An unexpected error occurred' });
+      const statusCode = error instanceof AppError ? error.statusCode : 500;
+      const message =
+        error instanceof AppError
+          ? error.message
+          : "An unexpected error occurred";
+
+      res
+        .status(statusCode)
+        .json({ errorCode: statusCode === 500 ? 500 : statusCode, message });
     }
   }
 
-  
   async getLeaveTypeById(req: Request, res: Response): Promise<void> {
     const { id } = req.params;
 
@@ -39,28 +56,47 @@ export class LeaveTypeController {
       }
       res.status(200).json({ data: leaveType });
     } catch (error) {
-      res.status(500).json({ message: error instanceof Error ? error.message : 'An unexpected error occurred' });
+      const statusCode = error instanceof AppError ? error.statusCode : 500;
+      const message =
+        error instanceof AppError
+          ? error.message
+          : "An unexpected error occurred";
+
+      res
+        .status(statusCode)
+        .json({ errorCode: statusCode === 500 ? 500 : statusCode, message });
     }
   }
 
-  
   async updateLeaveType(req: Request, res: Response): Promise<void> {
     const { id } = req.params;
     const { typeName, description, maxDaysPerYear } = req.body;
 
     try {
-      const leaveType = await leaveTypeService.updateLeaveType(id, typeName, description, maxDaysPerYear);
+      const leaveType = await leaveTypeService.updateLeaveType(
+        id,
+        typeName,
+        description,
+        maxDaysPerYear
+      );
       if (!leaveType) {
         res.status(404).json({ message: "Leave type not found" });
         return;
       }
       res.status(200).json({ data: leaveType });
     } catch (error) {
-      res.status(500).json({ message: error instanceof Error ? error.message : 'An unexpected error occurred' });
+      const statusCode = error instanceof AppError ? error.statusCode : 500;
+      const message =
+        error instanceof AppError
+          ? error.message
+          : "An unexpected error occurred";
+
+      res
+        .status(statusCode)
+        .json({ errorCode: statusCode === 500 ? 500 : statusCode, message });
     }
   }
 
-  
   async deleteLeaveType(req: Request, res: Response): Promise<void> {
     const { id } = req.params;
 
@@ -68,7 +104,15 @@ export class LeaveTypeController {
       await leaveTypeService.deleteLeaveType(id);
       res.status(200).json({ message: "Leave type deleted successfully" });
     } catch (error) {
-      res.status(500).json({ message: error instanceof Error ? error.message : 'An unexpected error occurred' });
+      const statusCode = error instanceof AppError ? error.statusCode : 500;
+      const message =
+        error instanceof AppError
+          ? error.message
+          : "An unexpected error occurred";
+
+      res
+        .status(statusCode)
+        .json({ errorCode: statusCode === 500 ? 500 : statusCode, message });
     }
   }
 }
