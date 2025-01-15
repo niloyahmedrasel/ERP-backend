@@ -10,7 +10,7 @@ import upload from "../middleware/uploadMediaFiles";
 router.post("/create",upload.single("profilePicture"),  new UserController().createUser);
 router.get("/:id",authenticateToken, new UserController().getUser);
 router.get("/",authenticateToken, new UserController().getAllUsers);
-router.put("/update/:id",upload.single("profilePicture"), authenticateToken,validate(employeeValidationSchema), new UserController().updateUser);
+router.put("/update/:id",upload.single("profilePicture"), authenticateToken, new UserController().updateUser);
 router.delete("/:id",authenticateToken, new UserController().deleteUser);
 router.post("/login", new UserController().login);
 
