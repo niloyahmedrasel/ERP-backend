@@ -20,6 +20,7 @@ export class PayrollController {
       );
       res.status(200).json({ data: payroll });
     } catch (error) {
+      console.log(error);
       const statusCode = error instanceof AppError ? error.statusCode : 500;
       const message =
         error instanceof AppError
