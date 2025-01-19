@@ -4,6 +4,7 @@ import { Types } from "mongoose";
 import { SalaryComponentRepository } from "../repository/salaryComponent";
 import { SalaryScaleRepository } from "../repository/salaryScale";
 import { EmployeeRepository } from "../repository/user";
+import { AppError } from "../utils/appError";
 
 const payrollRepository = new PayRollRepository();
 const salaryComponentRepository = new SalaryComponentRepository();
@@ -13,26 +14,27 @@ const employeeRepository = new EmployeeRepository();
 export class PayrollService {
   async createPayroll(
     employeeId: Types.ObjectId,
-    salaryScaleId: Types.ObjectId,
     paymentMonth: Date,
-    componentsBreakdown: any
   ): Promise<IPayroll> {
       const payrollData = {
         employeeId,
-        salaryScaleId,
+       // salaryScaleId,
         paymentMonth,
-        componentsBreakdown,
+        //componentsBreakdown,
       };
 
       let grossSalary = 0;
       let totalDeductions = 0;
       let netSalary = 0;
+      let componentsBreakdown: { componentId: Types.ObjectId; name: string; amount: number, type: string }[] = [];
 
-      const employeesalaryScale = await salaryScaleRepository.findById(
-        salaryScaleId.toString()
-      );
+      
 
       const employee = await employeeRepository.findById(employeeId.toString());
+
+      const employeesalaryScale = await salaryScaleRepository.findOne(
+        {_id:employee?.employmentDetails?.salaryScaleId.toString()}
+      );
 
       console.log(employeesalaryScale);
       if (!employeesalaryScale) {
@@ -47,24 +49,28 @@ export class PayrollService {
 
       for (let i = 0; i < employeesalaryScale.components.length; i++) {
         const componentId = employeesalaryScale.components[i].componentId;
+        
         console.log(componentId, "---kkkkkkkkkk-------------");
 
         const salaryComponent = await salaryComponentRepository.findById(
           componentId.toString()
         );
 
+        componentsBreakdown = [
+          ...componentsBreakdown,
+          {
+            componentId,
+            name: employeesalaryScale.components[i].name,
+            amount: employeesalaryScale.components[i].amount,
+            type: salaryComponent?.type || "null",
+          }];
+
+        console.log("salaryComponent", salaryComponent);
+
         if (!salaryComponent) {
           throw new Error("Salary component not found");
         }
 
-        if (!componentsBreakdown[i]) {
-          componentsBreakdown[i] = {};
-          componentsBreakdown[i].componentId = salaryComponent._id;
-          componentsBreakdown[i].name = employeesalaryScale.components[i].name;
-          componentsBreakdown[i].amount =
-            employeesalaryScale.components[i].amount;
-          componentsBreakdown[i].type = salaryComponent.type;
-        }
 
         if (salaryComponent.type === "Earning") {
           grossSalary += employeesalaryScale.components[i].amount;
@@ -93,9 +99,12 @@ export class PayrollService {
       const payroll = await payrollRepository.create(payrollData);
 
       if (payroll) {
+        payroll.salaryScaleId = employeesalaryScale._id;
+        payroll.componentsBreakdown = componentsBreakdown;
         payroll.grossSalary = grossSalary;
         payroll.totalDeductions = totalDeductions;
         payroll.netSalary = netSalary;
+        
         await payroll.save();
       }
 
@@ -117,31 +126,23 @@ export class PayrollService {
 
   async updatePayroll(
     id: string,
-    employeeId: Types.ObjectId,
-    salaryScaleId: Types.ObjectId,
-    paymentMonth: Date,
-    componentsBreakdown: any,
     deleteComponent: any,
     addComponent: any,
     editComponent: any
   ): Promise<IPayroll | null> {
     
+    console.log(deleteComponent, addComponent, editComponent);
       let grossSalary = 0;
       let totalDeductions = 0;
       let netSalary = 0;
 
       const payrollData = await payrollRepository.findById(id);
-      console.log(payrollData, "---payrollData---");
+
+      const salaryScaleId = payrollData?.salaryScaleId;
 
       if (!payrollData) {
-        throw new Error("Payroll not found");
+        throw new AppError("Payroll not found",200);
       }
-
-      console.log(deleteComponent, "---deleteComponent---");
-      console.log(
-        payrollData.componentsBreakdown,
-        "---payrollData.componentsBreakdown---"
-      );
 
       for (let i = 0; i < deleteComponent?.length; i++) {
         payrollData.componentsBreakdown =
@@ -156,9 +157,16 @@ export class PayrollService {
         const salaryComponent = await salaryComponentRepository.findById(
           addComponent[i]?.componentId
         );
-        const salaryScale = await salaryScaleRepository.findById(
-          salaryScaleId.toString()
+
+        console.log(salaryComponent, "---salaryComponent---");
+        console.log(salaryScaleId, "---salaryScaleId---");
+        const salaryScale = await salaryScaleRepository.findOne(
+          {
+            _id: salaryScaleId,
+          },
         );
+
+        console.log(salaryScale, "---salaryScale---");
         const salaryScaleComponent = salaryScale?.components.find(
           (component: any) =>
             component.componentId.toString() ===
@@ -166,7 +174,7 @@ export class PayrollService {
         );
 
         if (!salaryComponent) {
-          throw new Error("Salary component not found");
+          throw new AppError("Salary component not found",200);
         }
         payrollData.componentsBreakdown.push({
           componentId: salaryComponent._id,
@@ -181,7 +189,7 @@ export class PayrollService {
           editComponent[i]?.componentId
         );
         if (!salaryComponent) {
-          throw new Error("Salary component not found");
+          throw new AppError("Salary component not found",200);
         }
         payrollData.componentsBreakdown[i].componentId = salaryComponent._id;
         payrollData.componentsBreakdown[i].name = salaryComponent.name;
@@ -232,18 +240,10 @@ export class PayrollService {
         }
 
         const paymentMonth = new Date();
-        const componentsBreakdown: {
-          componentId: Types.ObjectId;
-          name: string;
-          amount: number;
-          type: string;
-        }[] = [];
 
         await this.createPayroll(
           new Types.ObjectId(employee._id),
-          salaryScale._id,
           paymentMonth,
-          componentsBreakdown
         );
       }
 

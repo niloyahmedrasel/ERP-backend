@@ -3,7 +3,7 @@ import Joi from "joi";
 // Define Joi validation schema for Payroll
 const payrollValidationSchema = Joi.object({
   employeeId: Joi.string().required(), // Ensure employeeId is a required string (should be an ObjectId in MongoDB)
-  salaryScaleId: Joi.string().required(), // Ensure salaryScaleId is a required string (should be an ObjectId)
+  salaryScaleId: Joi.string(), // Ensure salaryScaleId is a required string (should be an ObjectId)
   paymentMonth: Joi.date().required(), // Ensure paymentMonth is a valid date
   componentsBreakdown: Joi.array().items(
     Joi.object({

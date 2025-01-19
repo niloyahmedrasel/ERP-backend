@@ -8,15 +8,13 @@ const payrollService = new PayrollService();
 
 export class PayrollController {
   async createPayroll(req: Request, res: Response): Promise<any> {
-    const { employeeId, salaryScaleId, paymentMonth, componentsBreakdown } =
+    const { employeeId, paymentMonth } =
       req.body;
 
     try {
       const payroll = await payrollService.createPayroll(
         employeeId,
-        salaryScaleId,
-        paymentMonth,
-        componentsBreakdown
+        paymentMonth
       );
       res.status(200).json({ data: payroll });
     } catch (error) {
@@ -76,10 +74,6 @@ export class PayrollController {
   async updatePayroll(req: Request, res: Response): Promise<void> {
     const { id } = req.params;
     const {
-      employeeId,
-      salaryScaleId,
-      paymentMonth,
-      componentsBreakdown,
       deleteComponent,
       addComponent,
       editComponent,
@@ -88,10 +82,6 @@ export class PayrollController {
     try {
       const updatedPayroll = await payrollService.updatePayroll(
         id,
-        employeeId,
-        salaryScaleId,
-        paymentMonth,
-        componentsBreakdown,
         deleteComponent,
         addComponent,
         editComponent

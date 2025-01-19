@@ -6,8 +6,7 @@ const payrollSchema: Schema<IPayroll> = new Schema(
     employeeId: { type: Schema.Types.ObjectId, ref: "User", required: true },
     salaryScaleId: {
       type: Schema.Types.ObjectId,
-      ref: "salaryScale",
-      required: true,
+      ref: "salaryScale"
     },
     paymentMonth: { type: Date, required: true },
     componentsBreakdown: [
