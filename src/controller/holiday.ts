@@ -45,6 +45,25 @@ export class HolidayController {
     }
   }
 
+  async getHolidayById(req: Request, res: Response): Promise<void> {
+    const { id } = req.params;
+
+    try {
+      const holiday = await holidayService.getHolidayById(id);
+      res.status(200).json({ data: holiday });
+    } catch (error) {
+      const statusCode = error instanceof AppError ? error.statusCode : 500;
+      const message =
+        error instanceof AppError
+          ? error.message
+          : "An unexpected error occurred";
+
+      res
+        .status(statusCode)
+        .json({ errorCode: statusCode === 500 ? 500 : statusCode, message });
+    }
+  }
+
   async updateHoliday(req: Request, res: Response): Promise<void> {
     const { id } = req.params;
     const { name, date, description } = req.body;
