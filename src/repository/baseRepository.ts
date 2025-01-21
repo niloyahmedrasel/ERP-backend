@@ -14,14 +14,9 @@ export class baseRepository<T extends Document>{
     }
 
     async findOneAndUpdate(filters: {}, data: Partial<T>): Promise<T | null> {
-      // Use findOneAndUpdate to update the fields specified in 'data'
       const updatedDocument = await this.model.findOneAndUpdate(filters, data, { new: true }).exec();
-  
-      // Return the updated document
       return updatedDocument;
-  }
-  
-  
+    }  
     async findById(id:string):Promise<T | null>{
         return this.model.findById(id).exec()
     }

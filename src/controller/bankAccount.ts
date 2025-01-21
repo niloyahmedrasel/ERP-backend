@@ -30,9 +30,7 @@ export class BankAccountController {
           ? error.message
           : "An unexpected error occurred";
 
-      res
-        .status(statusCode)
-        .json({ errorCode: statusCode === 500 ? 500 : statusCode, message });
+      res.status(statusCode).json({ errorCode: statusCode === 500 ? 500 : statusCode, message });
     }
   }
 
@@ -87,11 +85,13 @@ export class BankAccountController {
         ifscCode,
         balance,
       });
+
       if (response) {
         res.status(200).json({ data: response });
       } else {
         res.status(404).json({ message: "Account not found" });
       }
+      
     } catch (error) {
       const statusCode = error instanceof AppError ? error.statusCode : 500;
       const message =

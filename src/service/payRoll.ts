@@ -38,12 +38,12 @@ export class PayrollService {
 
       console.log(employeesalaryScale);
       if (!employeesalaryScale) {
-        throw new Error("Employee salary structure not found");
+        throw new AppError("Employee salary structure not found",200);
       }
 
       if (employeesalaryScale._id.toString() !== employee?.employmentDetails?.salaryScaleId.toString()) {
-        throw new Error(
-          "Employee salary structure does not belong to the employee"
+        throw new AppError(
+          "Employee salary structure does not belong to the employee",200
         );
       }
 
@@ -84,16 +84,18 @@ export class PayrollService {
         console.log(grossSalary, totalDeductions, netSalary);
       }
 
+      const paymentMonthFormatted = new Date(paymentMonth).toISOString().slice(0, 7); 
+
       const employeePayRoll = await payrollRepository.findOne({
         employeeId: employeeId,
-        paymentMonth: paymentMonth, 
+        paymentMonth: {
+          $gte: new Date(`${paymentMonthFormatted}-01T00:00:00.000Z`), 
+          $lt: new Date(`${paymentMonthFormatted}-01T00:00:00.000Z`).setMonth(new Date(`${paymentMonthFormatted}-01T00:00:00.000Z`).getMonth() + 1), 
+        },
       });
 
-      const paymentMonthFormatted = new Date(paymentMonth).toISOString().slice(0, 7); 
-      const employeePaymentMonthFormatted = employeePayRoll?.paymentMonth? new Date(employeePayRoll.paymentMonth).toISOString().slice(0, 7): undefined;
-
-      if (paymentMonthFormatted === employeePaymentMonthFormatted) {
-       throw new Error("Payroll for this month already exists");
+      if (employeePayRoll) {
+        throw new AppError("Payroll for this month already exists",200);
       }
 
       const payroll = await payrollRepository.create(payrollData);
