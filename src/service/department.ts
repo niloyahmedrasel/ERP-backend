@@ -22,6 +22,15 @@ export class DepartmentService {
       return departements;
   }
 
+  async getDepartmentById(id: string): Promise<IDepartment> {
+    
+      const department = await departmentRepository.findOne({ _id: id });
+      if (!department) {
+        throw new AppError("Department not found",404);
+      }
+      return department;
+  }
+
   async updateDepartment(id: string, name: string, description: string): Promise<IDepartment> {
   
       const department = await departmentRepository.findOneAndUpdate({_id:id}, { name, description });
