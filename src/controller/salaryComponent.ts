@@ -8,10 +8,10 @@ export class SalaryComponentController {
 
   
   async createSalaryComponent(req: Request, res: Response): Promise<void> {
-    const { name, type, calculationMethod, isTaxable, description } = req.body;
+    const { name, type, description } = req.body;
 
     try {
-      const salaryComponent = await salaryComponentService.createSalaryComponent(name, type, calculationMethod, isTaxable, description);
+      const salaryComponent = await salaryComponentService.createSalaryComponent(name, type, description);
       res.status(200).json({ data: salaryComponent });
     } catch (error) {
           const statusCode = error instanceof AppError ? error.statusCode : 500;
@@ -56,10 +56,10 @@ export class SalaryComponentController {
   
   async updateSalaryComponent(req: Request, res: Response): Promise<void> {
     const { id } = req.params;
-    const { name, type, calculationMethod, isTaxable, description } = req.body;
+    const { name, type, description } = req.body;
 
     try {
-      const salaryComponent = await salaryComponentService.updateSalaryComponent(id, name, type, calculationMethod, isTaxable, description);
+      const salaryComponent = await salaryComponentService.updateSalaryComponent(id, name, type, description);
       res.status(200).json({ data: salaryComponent });
     } catch (error) {
       const statusCode = error instanceof AppError ? error.statusCode : 500;

@@ -7,9 +7,9 @@ const salaryComponentRepository = new SalaryComponentRepository();
 export class SalaryComponentService {
 
   
-  async createSalaryComponent(name: string, type: string, calculationMethod: string, isTaxable: boolean, description: string): Promise<ISalaryComponent> {
+  async createSalaryComponent(name: string, type: string, description: string): Promise<ISalaryComponent> {
     
-      const salaryComponent = await salaryComponentRepository.create({ name, type, calculationMethod, isTaxable, description });
+      const salaryComponent = await salaryComponentRepository.create({ name, type, description });
 
       if(!salaryComponent) {
         throw new Error('Error creating salary component');
@@ -37,9 +37,9 @@ export class SalaryComponentService {
   }
 
   
-  async updateSalaryComponent(id: string, name: string, type: string, calculationMethod: string,isTaxable: boolean, description: string): Promise<ISalaryComponent | null> {
+  async updateSalaryComponent(id: string, name: string, type: string, description: string): Promise<ISalaryComponent | null> {
     try {
-      const updatedSalaryComponent = await salaryComponentRepository.findOneAndUpdate({ _id: id }, { name, type, calculationMethod,isTaxable, description });
+      const updatedSalaryComponent = await salaryComponentRepository.findOneAndUpdate({ _id: id }, { name, type, description });
       return updatedSalaryComponent;
     } catch (error) {
       throw new Error('Error updating salary component');

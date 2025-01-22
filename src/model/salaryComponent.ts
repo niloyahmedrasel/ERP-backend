@@ -5,8 +5,6 @@ const salaryComponentSchema: Schema<ISalaryComponent> = new Schema(
   {
     name: { type: String, required: true },
     type: { type: String, enum: ['Earning', 'Deduction'], required: true },
-    calculationMethod: { type: String, required: true },
-    isTaxable: { type: Boolean, required: true },
     description: { type: String, required: true },
   },
   {
