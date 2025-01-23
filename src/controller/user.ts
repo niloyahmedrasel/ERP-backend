@@ -58,7 +58,7 @@ export class UserController {
         status
       );
   
-      res.status(201).json({
+      res.status(200).json({
         status: true,
         message: "User created successfully",
         data: employee,

@@ -33,7 +33,7 @@ export class TransactionController {
         referencePhoto,
         createdBy
       );
-      res.status(201).json({status: true, message: "Transaction created successfully", data: transaction });
+      res.status(200).json({status: true, message: "Transaction created successfully", data: transaction });
     } catch (error) {
           const statusCode = error instanceof AppError ? error.statusCode : 500;
           const message = error instanceof AppError? error.message: "An unexpected error occurred";
