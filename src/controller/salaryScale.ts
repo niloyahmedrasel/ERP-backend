@@ -15,7 +15,7 @@ export class SalaryScaleController {
         components,
         description
       );
-      res.status(200).json({ data: salaryScale });
+      res.status(200).json({status: true, message: "Salary structure created successfully", data: salaryScale });
     } catch (error) {
           const statusCode = error instanceof AppError ? error.statusCode : 500;
           const message = error instanceof AppError? error.message: "An unexpected error occurred";
@@ -27,7 +27,7 @@ export class SalaryScaleController {
   async getsalaryScales(req: Request, res: Response): Promise<void> {
     try {
       const salaryScales = await salaryScaleService.getsalaryScales();
-      res.status(200).json({ data: salaryScales });
+      res.status(200).json({status: true, message: "Salary structures fetched successfully", data: salaryScales });
     } catch (error) {
       const statusCode = error instanceof AppError ? error.statusCode : 500;
       const message = error instanceof AppError? error.message: "An unexpected error occurred";
@@ -42,7 +42,7 @@ export class SalaryScaleController {
     try {
       const salaryScale = await salaryScaleService.getsalaryScaleById(id);
       if (!salaryScale) {
-        res.status(404).json({ message: "Salary structure not found" });
+        res.status(404).json({status: false, message: "Salary structure not found" });
       } else {
         res.status(200).json({ data: salaryScale });
       }
@@ -65,7 +65,7 @@ export class SalaryScaleController {
         components,
         description
       );
-      res.status(200).json({ data: updatedsalaryScale });
+      res.status(200).json({status: true, message: "Salary structure updated successfully", data: updatedsalaryScale });
     } catch (error) {
       const statusCode = error instanceof AppError ? error.statusCode : 500;
       const message = error instanceof AppError? error.message: "An unexpected error occurred";
@@ -81,7 +81,7 @@ export class SalaryScaleController {
       await salaryScaleService.deletesalaryScale(id);
       res
         .status(200)
-        .json({ message: "Salary structure deleted successfully" });
+        .json({status: true, message: "Salary structure deleted successfully" });
     } catch (error) {
       const statusCode = error instanceof AppError ? error.statusCode : 500;
       const message = error instanceof AppError? error.message: "An unexpected error occurred";

@@ -8,7 +8,7 @@ import authenticateToken from "../middleware/auth";
 const router = express.Router();
 
 router.post(
-  "/create",
+  "/",
   authenticateToken,
   validate(salaryScaleValidationSchema),
   new SalaryScaleController().createsalaryScale
@@ -16,7 +16,7 @@ router.post(
 router.get("/",authenticateToken, new SalaryScaleController().getsalaryScales);
 router.get("/:id",authenticateToken, new SalaryScaleController().getsalaryScaleById);
 router.put(
-  "/update/:id",
+  "/:id",
   authenticateToken,
   validate(salaryScaleValidationSchema),
   new SalaryScaleController().updatesalaryScale

@@ -12,7 +12,7 @@ export class SalaryComponentController {
 
     try {
       const salaryComponent = await salaryComponentService.createSalaryComponent(name, type, description);
-      res.status(200).json({ data: salaryComponent });
+      res.status(200).json({status: true, message: "Salary component created successfully", data: salaryComponent });
     } catch (error) {
           const statusCode = error instanceof AppError ? error.statusCode : 500;
           const message = error instanceof AppError? error.message: "An unexpected error occurred";
@@ -25,7 +25,7 @@ export class SalaryComponentController {
   async getSalaryComponents(req: Request, res: Response): Promise<void> {
     try {
       const salaryComponents = await salaryComponentService.getSalaryComponents();
-      res.status(200).json({ data: salaryComponents });
+      res.status(200).json({status: true, message: "Salary components fetched successfully", data: salaryComponents });
     } catch (error) {
       const statusCode = error instanceof AppError ? error.statusCode : 500;
       const message = error instanceof AppError? error.message: "An unexpected error occurred";
@@ -41,7 +41,7 @@ export class SalaryComponentController {
     try {
       const salaryComponent = await salaryComponentService.getSalaryComponentById(id);
       if (!salaryComponent) {
-        res.status(404).json({ message: 'Salary component not found' });
+        res.status(404).json({status: false, message: 'Salary component not found' });
       } else {
         res.status(200).json({ data: salaryComponent });
       }
@@ -60,7 +60,7 @@ export class SalaryComponentController {
 
     try {
       const salaryComponent = await salaryComponentService.updateSalaryComponent(id, name, type, description);
-      res.status(200).json({ data: salaryComponent });
+      res.status(200).json({status: true, message: "Salary component updated successfully", data: salaryComponent });
     } catch (error) {
       const statusCode = error instanceof AppError ? error.statusCode : 500;
       const message = error instanceof AppError? error.message: "An unexpected error occurred";
@@ -75,7 +75,7 @@ export class SalaryComponentController {
 
     try {
       await salaryComponentService.deleteSalaryComponent(id);
-      res.status(200).json({ message: 'Salary component deleted successfully' });
+      res.status(200).json({status: true, message: 'Salary component deleted successfully' });
     } catch (error) {
       const statusCode = error instanceof AppError ? error.statusCode : 500;
       const message = error instanceof AppError? error.message: "An unexpected error occurred";

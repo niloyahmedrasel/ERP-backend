@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { BankAccountService } from "../service/bankAccount";
 import { AppError } from "../utils/appError";
+import { stat } from "fs";
 const bankAccountService = new BankAccountService();
 
 export class BankAccountController {
@@ -10,7 +11,6 @@ export class BankAccountController {
       accountNumber,
       bankName,
       branchName,
-      ifscCode,
       balance,
     } = req.body;
     try {
@@ -19,10 +19,9 @@ export class BankAccountController {
         accountNumber,
         bankName,
         branchName,
-        ifscCode,
         balance
       );
-      res.status(200).json({ data: response });
+      res.status(200).json({status: 200,message: "Account created successfully", data: response });
     } catch (error) {
       const statusCode = error instanceof AppError? error.statusCode : 500;
       const message =
@@ -40,9 +39,9 @@ export class BankAccountController {
     try {
       const response = await bankAccountService.getAccount(accountNumber);
       if (response) {
-        res.status(200).json({ data: response });
+        res.status(200).json({status: true,message: "Account fetched successfully", data: response });
       } else {
-        res.status(404).json({ message: "Account not found" });
+        res.status(404).json({status: false, message: "Account not found" });
       }
     } catch (error) {
       const statusCode = error instanceof AppError ? error.statusCode : 500;
@@ -60,7 +59,7 @@ export class BankAccountController {
   async getAllBankAccount(req: Request, res: Response): Promise<void> {
     try {
       const response = await bankAccountService.getAllBankAccount();
-      res.status(200).json({ data: response });
+      res.status(200).json({status: true,message: "Accounts fetched successfully", data: response });
     } catch (error) {
       res
         .status(500)
@@ -74,22 +73,21 @@ export class BankAccountController {
   }
 
   async updateAccount(req: Request, res: Response): Promise<void> {
-    const { accountNumber } = req.params;
-    const { accountName, bankName, branchName, ifscCode, balance } = req.body;
+    const { accountId } = req.params;
+    const { accountName, bankName, branchName,balance } = req.body;
 
     try {
-      const response = await bankAccountService.updateAccount(accountNumber, {
+      const response = await bankAccountService.updateAccount(accountId, {
         accountName,
         bankName,
         branchName,
-        ifscCode,
         balance,
       });
 
       if (response) {
-        res.status(200).json({ data: response });
+        res.status(200).json({status: true,message: "Account updated successfully", data: response });
       } else {
-        res.status(404).json({ message: "Account not found" });
+        res.status(404).json({status: false, message: "Account not found" });
       }
       
     } catch (error) {
@@ -106,13 +104,13 @@ export class BankAccountController {
   }
 
   async deleteAccount(req: Request, res: Response): Promise<void> {
-    const { accountNumber } = req.params;
+    const { accountId } = req.params;
     try {
-      const response = await bankAccountService.deleteAccount(accountNumber);
+      const response = await bankAccountService.deleteAccount(accountId);
       if (response) {
-        res.status(200).json({ message: "Account deleted successfully" });
+        res.status(200).json({status: true, message: "Account deleted successfully" });
       } else {
-        res.status(404).json({ message: "Account not found" });
+        res.status(404).json({status: false, message: "Account not found" });
       }
     } catch (error) {
       const statusCode = error instanceof AppError ? error.statusCode : 500;

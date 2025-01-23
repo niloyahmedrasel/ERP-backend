@@ -16,7 +16,7 @@ export class TicketController {
         assignedTo,
         priority
       );
-      res.status(201).json({ data: newTicket });
+      res.status(201).json({status: true, message: "Ticket created successfully", data: newTicket });
     } catch (error) {
       const statusCode = error instanceof AppError ? error.statusCode : 500;
       const message =
@@ -33,7 +33,7 @@ export class TicketController {
   async getTickets(req: Request, res: Response): Promise<void> {
     try {
       const tickets = await ticketService.getTickets();
-      res.status(200).json({ data: tickets });
+      res.status(200).json({status: true, message: "Tickets fetched successfully", data: tickets });
     } catch (error) {
       const statusCode = error instanceof AppError ? error.statusCode : 500;
       const message =
@@ -53,7 +53,7 @@ export class TicketController {
       const ticket = await ticketService.getTicketById(
         new mongoose.Types.ObjectId(ticketId)
       );
-      res.status(200).json({ data: ticket });
+      res.status(200).json({status: true, message: "Ticket fetched successfully", data: ticket });
     } catch (error) {
       const statusCode = error instanceof AppError ? error.statusCode : 500;
       const message =
@@ -74,7 +74,7 @@ export class TicketController {
         ticketId,
         updatedTicketData
       );
-      res.status(200).json({ data: updatedTicket });
+      res.status(200).json({status: true, message: "Ticket updated successfully", data: updatedTicket });
     } catch (error) {
       const statusCode = error instanceof AppError ? error.statusCode : 500;
       const message =
@@ -92,7 +92,7 @@ export class TicketController {
     try {
       const ticketId = req.params.ticketId;
       await ticketService.deleteTicket(ticketId);
-      res.status(200).json({ message: "Ticket deleted successfully" });
+      res.status(200).json({status: true, message: "Ticket deleted successfully" });
     } catch (error) {
       const statusCode = error instanceof AppError ? error.statusCode : 500;
       const message =

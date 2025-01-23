@@ -1,20 +1,25 @@
 import { Request, Response } from "express";
 import { DesignationService } from "../service/designation";
 import { AppError } from "../utils/appError";
+import { Types } from "mongoose";
+import { DesignationRepository } from "../repository/designation";
+import { stat } from "fs";
 
 const designationService = new DesignationService();
+const designationRepository = new DesignationRepository();
 
 export class DesignationController {
   // Create a new designation
   async createDesignation(req: Request, res: Response): Promise<void> {
-    const { title, description } = req.body;
+    const { title, description,departmentId } = req.body;
 
     try {
       const designation = await designationService.createDesignation(
         title,
-        description
+        description,
+        departmentId
       );
-      res.status(200).json({ data: designation });
+      res.status(200).json({status: true,message: "Designation created successfully", data: designation });
     } catch (error) {
       const statusCode = error instanceof AppError ? error.statusCode : 500;
       const message =
@@ -35,7 +40,7 @@ export class DesignationController {
     try {
       const designation = await designationService.getDesignationById(id);
       if (!designation) {
-        res.status(404).json({ message: "Designation not found" });
+        res.status(404).json({status: false, message: "Designation not found" });
       } else {
         res.status(200).json({ data: designation });
       }
@@ -55,8 +60,16 @@ export class DesignationController {
   // Get all designations
   async getAllDesignations(req: Request, res: Response): Promise<void> {
     try {
-      const designations = await designationService.getAllDesignations();
-      res.status(200).json({ data: designations });
+      const departmentId = req.query.departmentId as string;
+
+      if(departmentId){
+        const response = await designationRepository.find({departmentId});
+        res.status(200).json({status: true,message: "Designations fetched successfully", data: response });
+      }
+      else{
+        const response = await designationRepository.find({});
+        res.status(200).json({status: true,message: "Designations fetched successfully", data: response });
+      }
     } catch (error) {
       const statusCode = error instanceof AppError ? error.statusCode : 500;
       const message =
@@ -73,18 +86,18 @@ export class DesignationController {
   // Update a designation by ID
   async updateDesignation(req: Request, res: Response): Promise<void> {
     const id = req.params.id;
-    const { title, description } = req.body;
+    const { title, description,departmentId } = req.body;
     console.log(id);
 
     try {
       const updatedDesignation = await designationService.updateDesignation(
         id,
-        { title, description }
+        { title, description,departmentId }
       );
       if (!updatedDesignation) {
-        res.status(404).json({ message: "Designation not found" });
+        res.status(404).json({status: false, message: "Designation not found" });
       } else {
-        res.status(200).json({ data: updatedDesignation });
+        res.status(200).json({status: true,message: "Designation updated successfully", data: updatedDesignation });
       }
     } catch (error) {
       const statusCode = error instanceof AppError ? error.statusCode : 500;
@@ -106,9 +119,9 @@ export class DesignationController {
     try {
       const success = await designationService.deleteDesignation(id);
       if (success) {
-        res.status(200).json({ message: "Designation deleted successfully" });
+        res.status(200).json({status: true, message: "Designation deleted successfully" });
       } else {
-        res.status(404).json({ message: "Designation not found" });
+        res.status(404).json({status: false, message: "Designation not found" });
       }
     } catch (error) {
       const statusCode = error instanceof AppError ? error.statusCode : 500;
@@ -123,16 +136,15 @@ export class DesignationController {
     }
   }
 
-  // Delete multiple designations based on filters
   async deleteDesignations(req: Request, res: Response): Promise<void> {
     const filters = req.body; // Assuming filters are passed in the body as JSON
 
     try {
       const success = await designationService.deleteDesignations(filters);
       if (success) {
-        res.status(200).json({ message: "Designations deleted successfully" });
+        res.status(200).json({status: true, message: "Designations deleted successfully" });
       } else {
-        res.status(404).json({ message: "No designations found to delete" });
+        res.status(404).json({status: false, message: "No designations found to delete" });
       }
     } catch (error) {
       const statusCode = error instanceof AppError ? error.statusCode : 500;

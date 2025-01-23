@@ -7,10 +7,10 @@ import authenticateToken from "../middleware/auth";
 
 const router = express.Router();
 
-router.post("/create",authenticateToken, validate(designationSchema), new DesignationController().createDesignation);
+router.post("/",authenticateToken, validate(designationSchema), new DesignationController().createDesignation);
 router.get("/:id",authenticateToken, new DesignationController().getDesignationById);
 router.get("/",authenticateToken, new DesignationController().getAllDesignations);
-router.put("/update/:id",authenticateToken, validate(designationSchema), new DesignationController().updateDesignation);
+router.put("/:id",authenticateToken, validate(designationSchema), new DesignationController().updateDesignation);
 router.delete("/:id",authenticateToken, new DesignationController().deleteDesignation);
 router.delete("/",authenticateToken, new DesignationController().deleteDesignations);
 

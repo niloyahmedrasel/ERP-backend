@@ -14,7 +14,7 @@ export class HolidayController {
         date,
         description
       );
-      res.status(200).json({ data: holiday });
+      res.status(200).json({status: true,message: "Holiday created successfully", data: holiday });
     } catch (error) {
       const statusCode = error instanceof AppError ? error.statusCode : 500;
       const message =
@@ -31,7 +31,7 @@ export class HolidayController {
   async getHolidays(req: Request, res: Response): Promise<void> {
     try {
       const holidays = await holidayService.getHolidays();
-      res.status(200).json({ data: holidays });
+      res.status(200).json({status: true,message: "Holidays fetched successfully", data: holidays });
     } catch (error) {
       const statusCode = error instanceof AppError ? error.statusCode : 500;
       const message =
@@ -50,7 +50,7 @@ export class HolidayController {
 
     try {
       const holiday = await holidayService.getHolidayById(id);
-      res.status(200).json({ data: holiday });
+      res.status(200).json({status: true,message: "Holiday fetched successfully", data: holiday });
     } catch (error) {
       const statusCode = error instanceof AppError ? error.statusCode : 500;
       const message =
@@ -75,7 +75,7 @@ export class HolidayController {
         date,
         description
       );
-      res.status(200).json({ data: holiday });
+      res.status(200).json({status: true,message: "Holiday updated successfully", data: holiday });
     } catch (error) {
       const statusCode = error instanceof AppError ? error.statusCode : 500;
       const message =
@@ -94,7 +94,7 @@ export class HolidayController {
 
     try {
       await holidayService.deleteHoliday(id);
-      res.status(200).json({ message: "Holiday deleted successfully" });
+      res.status(200).json({status: true, message: "Holiday deleted successfully" });
     } catch (error) {
       const statusCode = error instanceof AppError ? error.statusCode : 500;
       const message =

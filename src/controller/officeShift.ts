@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { OfficeShiftService } from "../service/officeShift";
 import { AppError } from "../utils/appError";
+import { stat } from "fs";
 
 const officeShiftService = new OfficeShiftService();
 
@@ -16,7 +17,7 @@ export class OfficeShiftController {
         endTime,
         description
       );
-      res.status(200).json({ data: officeShift });
+      res.status(200).json({status: true, message: "Office shift created successfully", data: officeShift });
     } catch (error) {
       const statusCode = error instanceof AppError ? error.statusCode : 500;
       const message =
@@ -30,11 +31,10 @@ export class OfficeShiftController {
     }
   }
 
-  // Get all office shifts
   async getOfficeShifts(req: Request, res: Response): Promise<void> {
     try {
       const officeShifts = await officeShiftService.getOfficeShifts();
-      res.status(200).json({ data: officeShifts });
+      res.status(200).json({status: true, message: "Office shifts fetched successfully", data: officeShifts });
     } catch (error) {
       const statusCode = error instanceof AppError ? error.statusCode : 500;
       const message =
@@ -48,17 +48,16 @@ export class OfficeShiftController {
     }
   }
 
-  // Get a specific office shift by ID
   async getOfficeShiftById(req: Request, res: Response): Promise<void> {
     const { id } = req.params;
 
     try {
       const officeShift = await officeShiftService.getOfficeShiftById(id);
       if (!officeShift) {
-        res.status(404).json({ message: "Office shift not found" });
+        res.status(404).json({status: false, message: "Office shift not found" });
         return;
       }
-      res.status(200).json({ data: officeShift });
+      res.status(200).json({status: true, message: "Office shift fetched successfully", data: officeShift });
     } catch (error) {
       const statusCode = error instanceof AppError ? error.statusCode : 500;
       const message =
@@ -86,10 +85,10 @@ export class OfficeShiftController {
         description
       );
       if (!officeShift) {
-        res.status(404).json({ message: "Office shift not found" });
+        res.status(404).json({status: false, message: "Office shift not found" });
         return;
       }
-      res.status(200).json({ data: officeShift });
+      res.status(200).json({status: true, message: "Office shift updated successfully", data: officeShift });
     } catch (error) {
       const statusCode = error instanceof AppError ? error.statusCode : 500;
       const message =
@@ -109,7 +108,7 @@ export class OfficeShiftController {
 
     try {
       await officeShiftService.deleteOfficeShift(id);
-      res.status(200).json({ message: "Office shift deleted successfully" });
+      res.status(200).json({status: true, message: "Office shift deleted successfully" });
     } catch (error) {
       const statusCode = error instanceof AppError ? error.statusCode : 500;
       const message =

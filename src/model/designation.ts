@@ -6,6 +6,7 @@ const designationSchema: Schema<IDesignation> = new Schema(
   {
     title: { type: String, required: true },
     description: { type: String, required: true },
+    departmentId: { type: Schema.Types.ObjectId, ref: 'Department', required: true },
   },
   {
     timestamps: true, // Automatically adds createdAt and updatedAt fields

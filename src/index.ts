@@ -32,21 +32,21 @@ app.use(express.json());
 
 app.use("/upload", express.static(path.join(__dirname, "../public/upload")));
 
-app.use("/api/user", userRouter);
-app.use("/api/bankAccount", authenticateToken, bankAccountRouter);
-app.use("/api/designation", authenticateToken, designationRouter);
-app.use("/api/department", authenticateToken, departmentRouter);
-app.use("/api/employmentStatus", authenticateToken, employmentStatusRouter);
-app.use("/api/holiday", authenticateToken, holidayRouter);
-app.use("/api/leaveType", authenticateToken, leaveTypeRouter);
-app.use("/api/officeShift", authenticateToken, officeShiftRouter);
-app.use("/api/salaryComponent", authenticateToken, salaryComponentRouter);
-app.use("/api/salaryScale", authenticateToken, salaryScaleRouter);
-app.use("/api/payRoll", authenticateToken, payRollRouter);
-app.use("/api/transection", authenticateToken, transectionRouter);
-app.use("/api/project", authenticateToken, projectRouter);
-app.use("/api/task", authenticateToken, taskRouter);
-app.use("/api/ticket", authenticateToken, ticketRouter);
+app.use("/api/users", userRouter);
+app.use("/api/bank-accounts", authenticateToken, bankAccountRouter);
+app.use("/api/designations", authenticateToken, designationRouter);
+app.use("/api/departments", authenticateToken, departmentRouter);
+app.use("/api/employment-statuses", authenticateToken, employmentStatusRouter);
+app.use("/api/holidays", authenticateToken, holidayRouter);
+app.use("/api/leave-types", authenticateToken, leaveTypeRouter);
+app.use("/api/office-shifts", authenticateToken, officeShiftRouter);
+app.use("/api/salary-components", authenticateToken, salaryComponentRouter);
+app.use("/api/salary-scales", authenticateToken, salaryScaleRouter);
+app.use("/api/payrolls", authenticateToken, payRollRouter);
+app.use("/api/transections", authenticateToken, transectionRouter);
+app.use("/api/projects", authenticateToken, projectRouter);
+app.use("/api/tasks", authenticateToken, taskRouter);
+app.use("/api/tickets", authenticateToken, ticketRouter);
 
 cron.schedule(
   "0 0 1 * *",

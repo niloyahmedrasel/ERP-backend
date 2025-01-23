@@ -6,9 +6,9 @@ const bankAccountRepository = new BankAccountRepository();
 
 export class BankAccountService {
   
-  async createAccount(accountName: string, accountNumber: string, bankName: string, branchName: string, ifscCode: string, balance: number): Promise<IBankAccount> {
+  async createAccount(accountName: string, accountNumber: string, bankName: string, branchName: string, balance: number): Promise<IBankAccount> {
    
-      const bankAccount = await bankAccountRepository.create({ accountName, accountNumber, bankName, branchName, ifscCode, balance });
+      const bankAccount = await bankAccountRepository.create({ accountName, accountNumber, bankName, branchName, balance });
       if (!bankAccount) {
         throw new AppError("Bank account creation failed",402);
       }
@@ -35,9 +35,9 @@ export class BankAccountService {
   }
 
   
-  async updateAccount(accountNumber: string, updates: Partial<IBankAccount>): Promise<IBankAccount | null> {
+  async updateAccount(accountId: string, updates: Partial<IBankAccount>): Promise<IBankAccount | null> {
     
-      const bankAccount = await bankAccountRepository.findOneAndUpdate({ accountNumber }, updates);
+      const bankAccount = await bankAccountRepository.findOneAndUpdate({ _id: accountId }, updates);
       if(!bankAccount) {
         throw new AppError("input data is not correct",400);
       }
@@ -45,9 +45,9 @@ export class BankAccountService {
   }
 
   
-  async deleteAccount(accountNumber: string): Promise<boolean> {
+  async deleteAccount(accountId: string): Promise<boolean> {
    
-      const result = await bankAccountRepository.deleteOne({ accountNumber });
+      const result = await bankAccountRepository.deleteOne({ _id: accountId });
       if(!result) {
         throw new AppError("account not found",404);
       }

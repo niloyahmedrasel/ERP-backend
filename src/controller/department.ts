@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { DepartmentService } from "../service/department";
 import { AppError } from "../utils/appError";
+import { stat } from "fs";
 
 const departmentService = new DepartmentService();
 
@@ -13,7 +14,7 @@ export class DepartmentController {
         name,
         description
       );
-      res.status(200).json({ data: department });
+      res.status(200).json({status: true,message: "Department created successfully", data: department });
     } catch (error) {
       const statusCode = error instanceof AppError ? error.statusCode : 500;
       const message =
@@ -30,7 +31,7 @@ export class DepartmentController {
   async getDepartments(req: Request, res: Response): Promise<void> {
     try {
       const departments = await departmentService.getDepartments();
-      res.status(200).json({ data: departments });
+      res.status(200).json({status: true,message: "Departments fetched successfully", data: departments });
     } catch (error) {
       const statusCode = error instanceof AppError ? error.statusCode : 500;
       const message =
@@ -49,7 +50,7 @@ export class DepartmentController {
 
     try {
       const department = await departmentService.getDepartmentById(id);
-      res.status(200).json({ data: department });
+      res.status(200).json({status: true,message: "Department fetched successfully", data: department });
     } catch (error) {
       const statusCode = error instanceof AppError ? error.statusCode : 500;
       const message =
@@ -75,7 +76,7 @@ export class DepartmentController {
         name,
         description
       );
-      res.status(200).json({ data: department });
+      res.status(200).json({status: true,message: "Department updated successfully", data: department });
     } catch (error) {
       const statusCode = error instanceof AppError ? error.statusCode : 500;
       const message =
@@ -94,7 +95,7 @@ export class DepartmentController {
 
     try {
       await departmentService.deleteDepartment(id);
-      res.status(200).json({ message: "Department deleted successfully" });
+      res.status(200).json({status: true, message: "Department deleted successfully" });
     } catch (error) {
       const statusCode = error instanceof AppError ? error.statusCode : 500;
       const message =

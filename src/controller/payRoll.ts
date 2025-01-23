@@ -16,7 +16,7 @@ export class PayrollController {
         employeeId,
         paymentMonth
       );
-      res.status(200).json({ data: payroll });
+      res.status(200).json({status: true, message: "Payroll created successfully", data: payroll });
     } catch (error) {
       console.log(error);
       const statusCode = error instanceof AppError ? error.statusCode : 500;
@@ -34,7 +34,7 @@ export class PayrollController {
   async getPayrolls(req: Request, res: Response): Promise<any> {
     try {
       const payrolls = await payrollService.getPayrolls();
-      res.status(200).json({ data: payrolls });
+      res.status(200).json({status: true, message: "Payrolls fetched successfully", data: payrolls });
     } catch (error) {
       const statusCode = error instanceof AppError ? error.statusCode : 500;
       const message =
@@ -54,9 +54,9 @@ export class PayrollController {
     try {
       const payroll = await payrollService.getPayrollById(id);
       if (!payroll) {
-        res.status(404).json({ message: "Payroll not found" });
+        res.status(404).json({status: false, message: "Payroll not found" });
       } else {
-        res.status(200).json({ data: payroll });
+        res.status(200).json({status: true, message: "Payroll fetched successfully", data: payroll });
       }
     } catch (error) {
       const statusCode = error instanceof AppError ? error.statusCode : 500;
@@ -87,9 +87,9 @@ export class PayrollController {
         editComponent
       );
       if (!updatedPayroll) {
-        res.status(404).json({ message: "Payroll not found" });
+        res.status(404).json({status: false, message: "Payroll not found" });
       } else {
-        res.status(200).json({ data: updatedPayroll });
+        res.status(200).json({status: true, message: "Payroll updated successfully", data: updatedPayroll });
       }
     } catch (error) {
       const statusCode = error instanceof AppError ? error.statusCode : 500;
@@ -105,9 +105,9 @@ export class PayrollController {
     try {
       const deletedPayroll = await payrollService.deletePayroll(id);
       if (!deletedPayroll) {
-        res.status(404).json({ message: "Payroll not found" });
+        res.status(404).json({status: false, message: "Payroll not found" });
       } else {
-        res.status(200).json({ message: "Payroll deleted successfully" });
+        res.status(200).json({status: true, message: "Payroll deleted successfully" });
       }
     } catch (error) {
       const statusCode = error instanceof AppError ? error.statusCode : 500;

@@ -1,13 +1,15 @@
 import { DesignationRepository } from "../repository/designation";
 import { IDesignation } from "../model/interface/designation";
 import { AppError } from "../utils/appError";
+import { Types } from "mongoose";
+
 
 const designationRepository = new DesignationRepository();
 
 export class DesignationService {
 
-  async createDesignation(title: string, description: string): Promise<IDesignation> {
-    const create = await designationRepository.create({ title, description });
+  async createDesignation(title: string, description: string,departmentId:Types.ObjectId): Promise<IDesignation> {
+    const create = await designationRepository.create({ title, description,departmentId });
     if (!create) throw new AppError("Designation creation failed", 402);
     return create;
   }
@@ -16,10 +18,6 @@ export class DesignationService {
     const designations = await designationRepository.findById(id);
     if (!designations) throw new AppError("Designation not found", 404);
     return designations;
-  }
-
-  async getAllDesignations(): Promise<IDesignation[]> {
-    return await designationRepository.find({});
   }
 
   async updateDesignation(id: string, data: Partial<IDesignation>): Promise<IDesignation | null> {

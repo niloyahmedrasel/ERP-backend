@@ -1,7 +1,6 @@
 import { EmployeeRepository } from "../repository/user";
 import {
   IEmployee,
-  IAddress,
   IEmergencyContact,
   IEmploymentDetails,
   IIdentification,
@@ -22,7 +21,8 @@ export class UserService {
     phone: string,
     dateOfBirth: Date,
     gender: string,
-    address: IAddress,
+    address: string,
+    country:string,
     emergencyContact: IEmergencyContact,
     employmentDetails: IEmploymentDetails,
     identification: IIdentification,
@@ -41,6 +41,7 @@ export class UserService {
         dateOfBirth,
         gender,
         address,
+        country,
         emergencyContact,
         employmentDetails,
         identification,

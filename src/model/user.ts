@@ -33,11 +33,12 @@ const employeeSchema: Schema<IEmployee> = new Schema(
       required: true,
     },
     address: {
-      street: { type: String, required: true },
-      city: { type: String, required: true },
-      state: { type: String, required: true },
-      postalCode: { type: String, required: true },
-      country: { type: String, required: true },
+      type: String,
+      required: true,
+    },
+    country: { 
+      type: String,
+      required: true 
     },
     emergencyContact: {
       name: { type: String, required: true },
@@ -68,7 +69,7 @@ const employeeSchema: Schema<IEmployee> = new Schema(
         ref: "salaryScale",
         required: true,
       },
-      shiftId: { type: Schema.Types.ObjectId, ref: "Shift", required: true },
+      shiftId: { type: Schema.Types.ObjectId, ref: "officeShift", required: true },
     },
     identification: {
       nationalId: { type: String, required: true },
@@ -80,12 +81,9 @@ const employeeSchema: Schema<IEmployee> = new Schema(
       bankAccountNumber: { type: String, required: true },
       bankName: { type: String, required: true },
       branchName: { type: String, required: true },
-      ifscCode: { type: String, required: true },
     },
     profilePicture: { type: String, required: true },
     status: { type: String, required: true },
-    createdAt: { type: Date, default: Date.now },
-    updatedAt: { type: Date, default: Date.now },
   },
   {
     timestamps: true,

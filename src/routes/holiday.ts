@@ -6,10 +6,10 @@ import authenticateToken from "../middleware/auth";
 
 const router = express.Router();
 
-router.post("/create",authenticateToken, validate(holidaySchema), new HolidayController().createHoliday);
+router.post("/",authenticateToken, validate(holidaySchema), new HolidayController().createHoliday);
 router.get("/",authenticateToken, new HolidayController().getHolidays);
 router.get("/:id",authenticateToken, new HolidayController().getHolidayById);
-router.put("/update/:id",authenticateToken, validate(holidaySchema), new HolidayController().updateHoliday);
+router.put("/:id",authenticateToken, validate(holidaySchema), new HolidayController().updateHoliday);
 router.delete("/:id",authenticateToken, new HolidayController().deleteHoliday);
 
 export default router;

@@ -21,6 +21,8 @@ export class UserController {
         dateOfBirth,
         gender,
         status,
+        address,
+        country
       } = req.body;
   
       const profilePicture = req.file && req.file.originalname;
@@ -31,7 +33,6 @@ export class UserController {
           .json({ errorCode: 1001, message: "Profile Picture is required." });
       }
   
-      const address = JSON.parse(req.body.address || "{}");
       const emergencyContact = JSON.parse(req.body.emergencyContact || "{}");
       const employmentDetails = JSON.parse(req.body.employmentDetails || "{}");
       const identification = JSON.parse(req.body.identification || "{}");
@@ -48,6 +49,7 @@ export class UserController {
         dateOfBirth,
         gender,
         address,
+        country,
         emergencyContact,
         employmentDetails,
         identification,
@@ -57,6 +59,7 @@ export class UserController {
       );
   
       res.status(201).json({
+        status: true,
         message: "User created successfully",
         data: employee,
       });
@@ -80,10 +83,10 @@ export class UserController {
       const userId = req.params.id;
       const user = await userService.getUserById(userId);
       if (!user) {
-        res.status(404).json({ message: "User not found" });
+        res.status(404).json({status: false, message: "User not found" });
         return;
       }
-      res.status(200).json({ data: user });
+      res.status(200).json({status: true, message: "User fetched successfully", data: user });
     } catch (error) {
       console.log(error);
       const statusCode = error instanceof AppError ? error.statusCode : 500;
@@ -101,7 +104,7 @@ export class UserController {
   async getAllUsers(req: Request, res: Response): Promise<void> {
     try {
       const users = await userService.getAllUsers();
-      res.status(200).json({ data: users });
+      res.status(200).json({status: true, message: "Users fetched successfully", data: users });
     } catch (error) {
       console.log(error);
       const statusCode = error instanceof AppError ? error.statusCode : 500;
@@ -115,22 +118,12 @@ export class UserController {
       const userId = req.params.id;
       const updatedUser = { ...req.body };
 
-      // Parse JSON fields if they exist in the request body
-      if (updatedUser.address) {
-        try {
-          updatedUser.address = JSON.parse(updatedUser.address);
-        } catch (err) {
-          return res.status(400).json({
-            message: "Invalid JSON format for address field.",
-          });
-        }
-      }
-
       if (updatedUser.emergencyContact) {
         try {
           updatedUser.emergencyContact = JSON.parse(updatedUser.emergencyContact);
         } catch (err) {
           return res.status(400).json({
+            status: false,
             message: "Invalid JSON format for emergencyContact field.",
           });
         }
@@ -141,6 +134,7 @@ export class UserController {
           updatedUser.employmentDetails = JSON.parse(updatedUser.employmentDetails);
         } catch (err) {
           return res.status(400).json({
+            status: false,
             message: "Invalid JSON format for employmentDetails field.",
           });
         }
@@ -151,6 +145,7 @@ export class UserController {
           updatedUser.identification = JSON.parse(updatedUser.identification);
         } catch (err) {
           return res.status(400).json({
+            status: false,
             message: "Invalid JSON format for identification field.",
           });
         }
@@ -161,24 +156,24 @@ export class UserController {
           updatedUser.accountDetails = JSON.parse(updatedUser.accountDetails);
         } catch (err) {
           return res.status(400).json({
+            status: false,
             message: "Invalid JSON format for accountDetails field.",
           });
         }
       }
 
-      // Handle profile picture if it exists in the request
       if (req.file) {
         updatedUser.profilePicture = path.basename(req.file.path);
       }
 
-      // Call service to update user
       const user = await userService.updateUser(userId, updatedUser);
       if (!user) {
-        res.status(404).json({ message: "User not found" });
+        res.status(404).json({status: false, message: "User not found" });
         return;
       }
 
       res.status(200).json({
+        status: true,
         message: "User updated successfully",
         data: user,
       });
@@ -202,11 +197,12 @@ export class UserController {
       const userId = req.params.id;
       const deletedUser = await userService.deleteUser(userId);
       if (!deletedUser) {
-        res.status(404).json({ message: "User not found" });
+        res.status(404).json({status: false, message: "User not found" });
         return;
       }
 
       res.status(200).json({
+        status: true,
         message: "User deleted successfully",
         data: deletedUser,
       });
@@ -229,7 +225,7 @@ export class UserController {
       const { email, password } = req.body;
       const user = await userService.login(email, password);
       if (!user) {
-        res.status(404).json({ message: "User not found" });
+        res.status(404).json({status: false, message: "User not found" });
         return;
       }
       res.status(200).json({ data: user });

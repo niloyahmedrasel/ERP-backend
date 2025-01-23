@@ -7,10 +7,10 @@ import authenticateToken from "../middleware/auth";
 
 const router = express.Router();
 
-router.post("/create",authenticateToken, validate(bankAccountSchema), new BankAccountController().createAccount);
+router.post("/",authenticateToken, validate(bankAccountSchema), new BankAccountController().createAccount);
 router.get("/:accountNumber",authenticateToken, new BankAccountController().getAccount);
 router.get("/",authenticateToken, new BankAccountController().getAllBankAccount);
-router.put("/update/:accountNumber",authenticateToken, validate(bankAccountSchema), new BankAccountController().updateAccount);
-router.delete("/:accountNumber",authenticateToken, new BankAccountController().deleteAccount);
+router.put("/:accountId",authenticateToken, validate(bankAccountSchema), new BankAccountController().updateAccount);
+router.delete("/:accountId",authenticateToken, new BankAccountController().deleteAccount);
 
 export default router;

@@ -40,7 +40,6 @@ const accountDetailsSchema = Joi.object({
   bankAccountNumber: Joi.string().required(),
   bankName: Joi.string().required(),
   branchName: Joi.string().required(),
-  ifscCode: Joi.string().required(),
 });
 
 // Main Employee Joi validation schema

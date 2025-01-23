@@ -1,13 +1,5 @@
 import { Document, Types } from "mongoose";
 
-export interface IAddress {
-  street: string; // Street address
-  city: string; // City
-  state: string; // State or region
-  postalCode: string; // ZIP or postal code
-  country: string; // Country name
-}
-
 export interface IEmergencyContact {
   name: string; // Name of emergency contact
   relation: string; // Relationship to employee
@@ -36,7 +28,6 @@ export interface IAccountDetails {
   bankAccountNumber: string; // Account number
   bankName: string; // Bank name
   branchName: string; // Branch name
-  ifscCode: string; // Bank's IFSC or SWIFT code
 }
 
 export interface IEmployee extends Document {
@@ -48,7 +39,8 @@ export interface IEmployee extends Document {
   phone: string; // Phone number of the employee
   dateOfBirth: Date; // Date of birth
   gender: string; // Gender (e.g., Male, Female, Non-Binary)
-  address: IAddress; // Residential address
+  address: string; // Residential address
+  country: string;
   emergencyContact: IEmergencyContact; // Emergency contact details
   employmentDetails: IEmploymentDetails; // Job-specific information
   identification: IIdentification; // Government-issued IDs

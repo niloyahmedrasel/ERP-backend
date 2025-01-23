@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { LeaveTypeService } from "../service/leaveType";
 import { AppError } from "../utils/appError";
+import { stat } from "fs";
 
 const leaveTypeService = new LeaveTypeService();
 
@@ -14,7 +15,7 @@ export class LeaveTypeController {
         description,
         maxDaysPerYear
       );
-      res.status(200).json({ data: leaveType });
+      res.status(200).json({status: true,message: "Leave type created successfully", data: leaveType });
     } catch (error) {
       const statusCode = error instanceof AppError ? error.statusCode : 500;
       const message =
@@ -31,7 +32,7 @@ export class LeaveTypeController {
   async getLeaveTypes(req: Request, res: Response): Promise<void> {
     try {
       const leaveTypes = await leaveTypeService.getLeaveTypes();
-      res.status(200).json({ data: leaveTypes });
+      res.status(200).json({status: true,message: "Leave types fetched successfully", data: leaveTypes });
     } catch (error) {
       const statusCode = error instanceof AppError ? error.statusCode : 500;
       const message =
@@ -51,7 +52,7 @@ export class LeaveTypeController {
     try {
       const leaveType = await leaveTypeService.getLeaveTypeById(id);
       if (!leaveType) {
-        res.status(404).json({ message: "Leave type not found" });
+        res.status(404).json({status: false, message: "Leave type not found" });
         return;
       }
       res.status(200).json({ data: leaveType });
@@ -80,7 +81,7 @@ export class LeaveTypeController {
         maxDaysPerYear
       );
       if (!leaveType) {
-        res.status(404).json({ message: "Leave type not found" });
+        res.status(404).json({status: false, message: "Leave type not found" });
         return;
       }
       res.status(200).json({ data: leaveType });
@@ -102,7 +103,7 @@ export class LeaveTypeController {
 
     try {
       await leaveTypeService.deleteLeaveType(id);
-      res.status(200).json({ message: "Leave type deleted successfully" });
+      res.status(200).json({status: true, message: "Leave type deleted successfully" });
     } catch (error) {
       const statusCode = error instanceof AppError ? error.statusCode : 500;
       const message =

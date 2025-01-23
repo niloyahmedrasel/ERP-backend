@@ -6,7 +6,6 @@ export interface IBankAccount extends Document {
   accountNumber: string;
   bankName: string;
   branchName: string;
-  ifscCode: string;
   balance: number;
   createdAt: Date;
   updatedAt: Date;

@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { EmploymentStatusService } from "../service/employmentStatus";
 import { AppError } from "../utils/appError";
+import { stat } from "fs";
 
 const employmentStatusService = new EmploymentStatusService();
 
@@ -14,7 +15,7 @@ export class EmploymentStatusController {
           statusName,
           description
         );
-      res.status(200).json({ data: employmentStatus });
+      res.status(200).json({status: true,message: "Employment status created successfully", data: employmentStatus });
     } catch (error) {
       const statusCode = error instanceof AppError ? error.statusCode : 500;
       const message =
@@ -32,7 +33,7 @@ export class EmploymentStatusController {
     try {
       const employmentStatuses =
         await employmentStatusService.getEmploymentStatuses();
-      res.status(200).json({ data: employmentStatuses });
+      res.status(200).json({status: true,message: "Employment statuses fetched successfully", data: employmentStatuses });
     } catch (error) {
       const statusCode = error instanceof AppError ? error.statusCode : 500;
       const message =
@@ -52,7 +53,7 @@ export class EmploymentStatusController {
     try {
       const employmentStatus =
         await employmentStatusService.getEmploymentStatusById(id);
-      res.status(200).json({ data: employmentStatus });
+      res.status(200).json({status: true,message: "Employment status fetched successfully", data: employmentStatus });
     } catch (error) {
       const statusCode = error instanceof AppError ? error.statusCode : 500;
       const message =
@@ -77,7 +78,7 @@ export class EmploymentStatusController {
           statusName,
           description
         );
-      res.status(200).json({ data: employmentStatus });
+      res.status(200).json({status: true,message: "Employment status updated successfully", data: employmentStatus });
     } catch (error) {
       const statusCode = error instanceof AppError ? error.statusCode : 500;
       const message =
@@ -98,7 +99,7 @@ export class EmploymentStatusController {
       await employmentStatusService.deleteEmploymentStatus(id);
       res
         .status(200)
-        .json({ message: "Employment status deleted successfully" });
+        .json({status: true, message: "Employment status deleted successfully" });
     } catch (error) {
       const statusCode = error instanceof AppError ? error.statusCode : 500;
       const message =

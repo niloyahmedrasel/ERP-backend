@@ -6,10 +6,10 @@ import authenticateToken from "../middleware/auth";
 
 const router = express.Router();
 
-router.post("/create",authenticateToken, validate(payrollValidationSchema), new PayrollController().createPayroll);
+router.post("/",authenticateToken, validate(payrollValidationSchema), new PayrollController().createPayroll);
 router.get("/",authenticateToken, new PayrollController().getPayrolls);
 router.get("/:id",authenticateToken, new PayrollController().getPayrollById); 
-router.put("/update/:id",authenticateToken, new PayrollController().updatePayroll);
+router.put("/:id",authenticateToken, new PayrollController().updatePayroll);
 router.delete("/:id",authenticateToken, new PayrollController().deletePayroll);
 
 export default router;

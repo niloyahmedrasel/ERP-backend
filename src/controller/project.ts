@@ -10,7 +10,7 @@ export class ProjectController {
 
       const response = await projectService.createProject(name, description, startDate, endDate, status);
 
-      res.status(200).json({ data: response });
+      res.status(200).json({status: true, message: "Project created successfully", data: response });
     } catch (error) {
           const statusCode = error instanceof AppError ? error.statusCode : 500;
           const message = error instanceof AppError? error.message: "An unexpected error occurred";
@@ -26,7 +26,7 @@ export class ProjectController {
      console.log(projectId, title, dueDate,"-------------")
      const response = await projectService.createMileStone(projectId, title, dueDate);
 
-     res.status(200).json({ data: response });
+     res.status(200).json({status: true, message: "Milestone created successfully", data: response });
     } catch (error) {
       const statusCode = error instanceof AppError ? error.statusCode : 500;
       const message = error instanceof AppError? error.message: "An unexpected error occurred";
@@ -38,7 +38,7 @@ export class ProjectController {
   async getProjects(req: Request, res: Response): Promise<any> {
     try {
       const response = await projectService.getProjects();
-      res.status(200).json({ data: response });
+      res.status(200).json({status: true, message: "Projects fetched successfully", data: response });
     } catch (error) {
       const statusCode = error instanceof AppError ? error.statusCode : 500;
       const message = error instanceof AppError? error.message: "An unexpected error occurred";
@@ -51,7 +51,7 @@ export class ProjectController {
     try {
       const projectId = req.params.projectId;
       const response = await projectService.getSingleProject(projectId);
-      res.status(200).json({ data: response });
+      res.status(200).json({status: true, message: "Project fetched successfully", data: response });
     } catch (error) {
       const statusCode = error instanceof AppError ? error.statusCode : 500;
       const message = error instanceof AppError? error.message: "An unexpected error occurred";
@@ -65,7 +65,7 @@ export class ProjectController {
       const projectId = req.params.projectId;
       const { name, description, startDate, endDate, status } = req.body;
       const response = await projectService.updateProject(projectId, name, description, startDate, endDate, status);
-      res.status(200).json({ data: response });
+      res.status(200).json({status: true, message: "Project updated successfully", data: response });
     } catch (error) {
       const statusCode = error instanceof AppError ? error.statusCode : 500;
       const message = error instanceof AppError? error.message: "An unexpected error occurred";
@@ -78,7 +78,7 @@ export class ProjectController {
     try {
       const projectId = req.params.projectId;
       const response = await projectService.deleteProject(projectId);
-      res.status(200).json({ data: response });
+      res.status(200).json({status: true, message: "Project deleted successfully", data: response });
     } catch (error) {
       const statusCode = error instanceof AppError ? error.statusCode : 500;
       const message = error instanceof AppError? error.message: "An unexpected error occurred";
