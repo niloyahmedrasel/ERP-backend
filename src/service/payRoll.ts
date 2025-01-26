@@ -101,6 +101,8 @@ export class PayrollService {
       const payroll = await payrollRepository.create(payrollData);
 
       if (payroll) {
+        payroll.employeeName = employee?.fullName;
+        payroll.employeefourDigitID = employee?.id;
         payroll.salaryScaleId = employeesalaryScale._id;
         payroll.componentsBreakdown = componentsBreakdown;
         payroll.grossSalary = grossSalary;

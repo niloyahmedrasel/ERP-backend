@@ -3,11 +3,11 @@ import mongoose, { Schema, Document, Types } from "mongoose";
 
 const employeeSchema: Schema<IEmployee> = new Schema(
   {
-    firstName: {
+    id: {
       type: String,
-      required: true,
+      unique: true,
     },
-    lastName: {
+    fullName: {
       type: String,
       required: true,
     },

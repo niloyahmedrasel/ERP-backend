@@ -32,8 +32,8 @@ export interface IAccountDetails {
 
 export interface IEmployee extends Document {
   _id: string; // Unique identifier for the user (ObjectId as string)
-  firstName: string; // First name of the employee
-  lastName: string; // Last name of the employee
+  id: string;
+  fullName: string; // First name of the employee
   email: string; // Email address of the employee
   password: string; // Password
   phone: string; // Phone number of the employee

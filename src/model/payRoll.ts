@@ -4,6 +4,8 @@ import { IPayroll } from "./interface/payRoll";
 const payrollSchema: Schema<IPayroll> = new Schema(
   {
     employeeId: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    employeeName: { type: String  },
+    employeefourDigitID: { type: String },
     salaryScaleId: {
       type: Schema.Types.ObjectId,
       ref: "salaryScale"

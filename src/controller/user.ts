@@ -13,8 +13,7 @@ export class UserController {
     console.log(req.body);
     try {
       const {
-        firstName,
-        lastName,
+        fullName,
         email,
         password,
         phone,
@@ -41,8 +40,7 @@ export class UserController {
       const hashedPassword = await bcrypt.hash(password, 10);
   
       const employee: IEmployee = await userService.createUser(
-        firstName,
-        lastName,
+        fullName,
         email,
         hashedPassword,
         phone,

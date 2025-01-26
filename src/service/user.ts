@@ -12,10 +12,31 @@ import { AppError } from "../utils/appError";
 const employeeRepository = new EmployeeRepository();
 
 export class UserService {
+
+  private async generateId(): Promise<string> {
+    // Get the current year (last two digits)
+    const currentYear = new Date().getFullYear() % 100;  // Get last two digits of the year (e.g., 2025 -> 25)
+
+    // Find the highest ID from users in the current year (sorting by ID in descending order)
+    const highestUser = (await employeeRepository.find({
+      id: { $regex: `^${String(currentYear).padStart(2, '0')}` }  // Match IDs starting with the current year
+    }))
+    .sort((a, b) => b.id.localeCompare(a.id))  // Sort by ID in descending order to get the most recent
+    .slice(0, 1)  // Limit to 1 to get only the highest ID
+    .map(user => user.id);  // Only select the 'id' field for efficiency
+
+    // If no user exists for the current year, start from 0001
+    let newSequentialId = highestUser.length > 0 ? parseInt(highestUser[0].substring(2)) + 1 : 1;
+
+    // Format the sequential ID as a 4-digit string
+    const sequentialId = String(newSequentialId).padStart(4, '0');
+
+    // Return the full ID: "YYSSSS" (e.g., "250001" for the first user in 2025)
+    return `${String(currentYear).padStart(2, '0')}${sequentialId}`;
+  }
  
   async createUser(
-    firstName: string,
-    lastName: string,
+    fullName: string,
     email: string,
     password: string,
     phone: string,
@@ -31,10 +52,10 @@ export class UserService {
     status: string
   ): Promise<IEmployee> {
     
-      
+      const id =await this.generateId();
       const employee = await employeeRepository.create({
-        firstName,
-        lastName,
+        id,
+        fullName,
         email,
         password,
         phone,

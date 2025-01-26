@@ -3,6 +3,8 @@ import { Types, Document } from "mongoose";
 export interface IPayroll extends Document {
   _id: Types.ObjectId;
   employeeId: Types.ObjectId;
+  employeeName: string;
+  employeefourDigitID: string;
   salaryScaleId: Types.ObjectId;
   paymentMonth: Date;
   componentsBreakdown: {

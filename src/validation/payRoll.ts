@@ -4,6 +4,8 @@ import Joi from "joi";
 const payrollValidationSchema = Joi.object({
   employeeId: Joi.string().required(), // Ensure employeeId is a required string (should be an ObjectId in MongoDB)
   salaryScaleId: Joi.string(), // Ensure salaryScaleId is a required string (should be an ObjectId)
+  employeeName: Joi.string(),
+  employeefourDigitID: Joi.string(), // Ensure employeeName is a required string;
   paymentMonth: Joi.date().required(), // Ensure paymentMonth is a valid date
   componentsBreakdown: Joi.array().items(
     Joi.object({
