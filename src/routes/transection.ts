@@ -6,13 +6,13 @@ import authenticateToken from "../middleware/auth";
 
 const router = express.Router();
 
-router.post("/",authenticateToken, validate(transactionValidationSchema), new TransactionController().createTransaction);
-router.get("/",authenticateToken, new TransactionController().getTransactions);
-router.get("/:id",authenticateToken, new TransactionController().getTransactionById);
-router.put("/:id",authenticateToken, validate(transactionValidationSchema), new TransactionController().updateTransaction);
-router.delete("/:id",authenticateToken, new TransactionController().deleteTransaction);
-router.get("/type/:transactionType",authenticateToken, new TransactionController().getTransectionByType);
-router.post("/transectionCategory",authenticateToken, new TransactionController().createTransectionCategory);
-router.get("/transectionCategory/:transectionType",authenticateToken, new TransactionController().getTransectionCategory);
+router.post("/",authenticateToken,validate(transactionValidationSchema), new TransactionController().createTransaction);
+router.get("/", authenticateToken, new TransactionController().getTransactions);
+router.get("/:id",authenticateToken,new TransactionController().getTransactionById);
+router.put("/:id",authenticateToken,validate(transactionValidationSchema),new TransactionController().updateTransaction);
+router.delete("/:id",authenticateToken,new TransactionController().deleteTransaction);
+router.get("/type/:transaction-types",authenticateToken,new TransactionController().getTransectionByType);
+router.post("/transaction-categorys",authenticateToken,new TransactionController().createTransectionCategory);
+router.get("/all/transaction-categorys",authenticateToken,new TransactionController().getTransectionCategory);
 
 export default router;

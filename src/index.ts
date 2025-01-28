@@ -43,7 +43,7 @@ app.use("/api/office-shifts", authenticateToken, officeShiftRouter);
 app.use("/api/salary-components", authenticateToken, salaryComponentRouter);
 app.use("/api/salary-scales", authenticateToken, salaryScaleRouter);
 app.use("/api/payrolls", authenticateToken, payRollRouter);
-app.use("/api/transections", authenticateToken, transectionRouter);
+app.use("/api/transactions", authenticateToken, transectionRouter);
 app.use("/api/projects", authenticateToken, projectRouter);
 app.use("/api/tasks", authenticateToken, taskRouter);
 app.use("/api/tickets", authenticateToken, ticketRouter);
