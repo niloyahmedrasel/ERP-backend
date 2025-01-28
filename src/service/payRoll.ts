@@ -68,7 +68,7 @@ export class PayrollService {
         console.log("salaryComponent", salaryComponent);
 
         if (!salaryComponent) {
-          throw new Error("Salary component not found");
+          throw new AppError("Salary component not found",404);
         }
 
 

@@ -16,23 +16,15 @@ export class BankAccountService {
   }
 
   
-  async getAccount(accountNumber: string): Promise<IBankAccount | null> {
+  async getAccount(accountId: string): Promise<IBankAccount | null> {
     
-      const bankAccount = await bankAccountRepository.findOne({ accountNumber: accountNumber });
+      const bankAccount = await bankAccountRepository.findOne({ _id: accountId });
       if(!bankAccount) {
         throw new AppError("Account not found",404);
       }
       return bankAccount;
   }
 
-  async getAllBankAccount(): Promise<IBankAccount[]> {
-
-      const bankAccounts = await bankAccountRepository.find({});
-      if(!bankAccounts) {
-        throw new AppError("No BankAccounts",200);
-      }
-      return bankAccounts;
-  }
 
   
   async updateAccount(accountId: string, updates: Partial<IBankAccount>): Promise<IBankAccount | null> {

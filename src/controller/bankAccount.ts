@@ -2,7 +2,9 @@ import { Request, Response } from "express";
 import { BankAccountService } from "../service/bankAccount";
 import { AppError } from "../utils/appError";
 import { stat } from "fs";
+import { BankAccountRepository } from "../repository/bankAccount";
 const bankAccountService = new BankAccountService();
+const bankAccountRepository =new BankAccountRepository()
 
 export class BankAccountController {
   async createAccount(req: Request, res: Response): Promise<void> {
@@ -34,10 +36,10 @@ export class BankAccountController {
   }
 
   async getAccount(req: Request, res: Response): Promise<void> {
-    const { accountNumber } = req.params;
+    const { accountId } = req.params;
 
     try {
-      const response = await bankAccountService.getAccount(accountNumber);
+      const response = await bankAccountService.getAccount(accountId);
       if (response) {
         res.status(200).json({status: true,message: "Account fetched successfully", data: response });
       } else {
@@ -58,8 +60,16 @@ export class BankAccountController {
 
   async getAllBankAccount(req: Request, res: Response): Promise<void> {
     try {
-      const response = await bankAccountService.getAllBankAccount();
-      res.status(200).json({status: true,message: "Accounts fetched successfully", data: response });
+      const accountNumber = req.query.accountNumber as string;
+
+      if(accountNumber){
+        const response = await bankAccountRepository.find({accountNumber});
+        res.status(200).json({status: true,message: "account fetched successfully", data: response });
+      }
+      else{
+        const response = await bankAccountRepository.find({});
+        res.status(200).json({status: true,message: "accounts fetched successfully", data: response });
+      }
     } catch (error) {
       res
         .status(500)
