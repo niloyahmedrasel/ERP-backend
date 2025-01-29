@@ -28,6 +28,7 @@ export class ProjectController {
 
      res.status(200).json({status: true, message: "Milestone created successfully", data: response });
     } catch (error) {
+      console.log(error)
       const statusCode = error instanceof AppError ? error.statusCode : 500;
       const message = error instanceof AppError? error.message: "An unexpected error occurred";
 

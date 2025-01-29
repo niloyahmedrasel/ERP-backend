@@ -4,4 +4,5 @@ export interface IDesignation extends Document {
   title: string; // Job title (e.g., Software Engineer)
   description: string; // Description of the role
   departmentId:Types.ObjectId
+  departmentName:string
 }

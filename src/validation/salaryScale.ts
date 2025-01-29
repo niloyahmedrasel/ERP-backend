@@ -9,8 +9,8 @@ const salaryScaleValidationSchema = Joi.object({
         componentId: Joi.string()
           .pattern(/^[0-9a-fA-F]{24}$/)
           .required(), // Ensure componentId is a valid ObjectId
-        name: Joi.string().required(), // Name of the salary component
-        amount: Joi.number().required(), // Amount for the salary component
+        name: Joi.string(), // Name of the salary component
+        amount: Joi.number() // Amount for the salary component
       })
     )
     .min(1)

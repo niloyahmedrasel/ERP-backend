@@ -2,8 +2,11 @@
 import { SalaryScaleRepository } from "../repository/salaryScale";
 import { IsalaryScale } from "../model/interface/salaryScale";
 import { Types } from "mongoose";
+import { SalaryComponentRepository } from "../repository/salaryComponent";
+import { AppError } from "../utils/appError";
 
 const salaryScaleRepository = new SalaryScaleRepository();
+const salaryComponentRepository = new SalaryComponentRepository();
 
 export class SalaryScaleService {
   async createsalaryScale(
@@ -15,16 +18,20 @@ export class SalaryScaleService {
     }>,
     description: string
   ): Promise<IsalaryScale> {
-    try {
+      for(let i =0; i<components.length;i++) {
+        const salaryComponent = await salaryComponentRepository.findById(components[i].componentId.toString());
+        if(!salaryComponent) {
+          throw new AppError("Salary component not found",200);
+        }
+        console.log(salaryComponent);
+        components[i].name = salaryComponent.name;
+      }
       const salaryScale = await salaryScaleRepository.create({
         title,
         components,
         description,
       });
       return salaryScale;
-    } catch (error) {
-      throw new Error("Error creating salary structure");
-    }
   }
 
   async getsalaryScales(): Promise<IsalaryScale[]> {

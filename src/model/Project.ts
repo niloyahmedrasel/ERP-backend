@@ -8,10 +8,10 @@ const projectSchema: Schema<IProject> = new Schema(
     startDate: { type: Date, required: true },
     endDate: { type: Date, required: true },
     status: { type: String, required: true },
-    milestone: { 
+    milestone: [{ 
       title: { type: String,default:null },
       dueDate: { type: Date,default:null },
-    },
+    }],
   },
   {
     timestamps: true, 
