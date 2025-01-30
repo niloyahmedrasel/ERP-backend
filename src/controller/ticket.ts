@@ -18,6 +18,7 @@ export class TicketController {
       );
       res.status(200).json({status: true, message: "Ticket created successfully", data: newTicket });
     } catch (error) {
+      console.log(error)
       const statusCode = error instanceof AppError ? error.statusCode : 500;
       const message =
         error instanceof AppError
