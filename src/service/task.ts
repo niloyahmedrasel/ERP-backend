@@ -1,6 +1,7 @@
 import { Types } from "mongoose";
 import { TaskRepository } from "../repository/task"
 import { EmployeeRepository } from "../repository/user";
+import { AppError } from "../utils/appError";
 
 const taskRepository = new TaskRepository();
 const employeeRepository = new EmployeeRepository();
@@ -10,7 +11,7 @@ export class TaskService{
   const employee = await employeeRepository.findById(assignedTo.toString());
 
   if(!employee){
-    throw new Error("Employee not found");
+    throw new AppError("Employee not found",200);
   }
   if(projectId && milestoneId){
     const createdTask = await taskRepository.create({title,description,relatedTo,projectId,milestoneId,assignedTo,priority,startDate,endDate,comments});
@@ -23,7 +24,7 @@ export class TaskService{
   }
 
   if(!projectId && !ticketId){
-    throw new Error("Project or ticket id is required");
+    throw new AppError("Project or ticket id is required",200);
   }
  
 }
