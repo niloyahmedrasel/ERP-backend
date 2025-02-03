@@ -71,12 +71,14 @@ export class TicketController {
     try {
       const ticketId = req.params.ticketId;
       const updatedTicketData = req.body;
+
       const updatedTicket = await ticketService.updateTicket(
         ticketId,
         updatedTicketData
       );
       res.status(200).json({status: true, message: "Ticket updated successfully", data: updatedTicket });
     } catch (error) {
+      console.log(error)
       const statusCode = error instanceof AppError ? error.statusCode : 500;
       const message =
         error instanceof AppError

@@ -40,7 +40,9 @@ export class TicketService {
   }
 
   async updateTicket(ticketId: string, updatedTicketData: Partial<ITicket>): Promise<any> {
-    const updatedTicket = await ticketRepository.findOneAndUpdate(ticketId, updatedTicketData);
+    console.log(ticketId,updatedTicketData)
+    const updatedTicket = await ticketRepository.findOneAndUpdate({_id:ticketId}, updatedTicketData);
+    console.log(updatedTicket)
     if (!updatedTicket) {
       throw new Error("Ticket not found or failed to update");
     }
