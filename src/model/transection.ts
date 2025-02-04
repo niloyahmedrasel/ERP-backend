@@ -6,8 +6,7 @@ const transactionSchema: Schema<ITransaction> = new Schema(
     title: { type: String, required: true },
     transactionCategoryId: {
       type: Schema.Types.ObjectId,
-      ref: "TransectionCategory",
-      required: true,
+      ref: "TransectionCategory"
     },
     transactionType: { type: String },
     bankAccountId: {

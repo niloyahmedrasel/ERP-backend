@@ -9,7 +9,7 @@ const router = express.Router();
 router.post("/",authenticateToken,validate(transactionValidationSchema), new TransactionController().createTransaction);
 router.get("/", authenticateToken, new TransactionController().getTransactions);
 router.get("/:id",authenticateToken,new TransactionController().getTransactionById);
-router.put("/:id",authenticateToken,validate(transactionValidationSchema),new TransactionController().updateTransaction);
+router.put("/:id",authenticateToken,new TransactionController().updateTransaction);
 router.delete("/:id",authenticateToken,new TransactionController().deleteTransaction);
 router.get("/type/:transaction-types",authenticateToken,new TransactionController().getTransectionByType);
 router.post("/transaction-categorys",authenticateToken,new TransactionController().createTransectionCategory);
