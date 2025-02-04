@@ -66,12 +66,13 @@ export class SalaryScaleService {
         throw new Error("Salary scale not found");
       }
   
-     
+ 
       const updatedComponents = await Promise.all(components.map(async (component) => {
+      
         const existingComponent = existingSalaryScale.components.find(c => c.componentId.toString() === component.componentId.toString());
         
         if (existingComponent) {
-       
+          
           return {
             componentId: component.componentId,
             name: existingComponent.name, 
@@ -79,29 +80,43 @@ export class SalaryScaleService {
           };
         } else {
           
-          return component;
+          const componentData = await salaryComponentRepository.findOne({ _id: component.componentId });
+  
+          if (componentData) {
+           
+            return {
+              componentId: component.componentId,
+              name: componentData.name, 
+              amount: component.amount
+            };
+          } else {
+           
+            throw new Error(`Component with ID ${component.componentId} not found`);
+          }
         }
       }));
   
-      const updatedsalaryScale = await salaryScaleRepository.findOneAndUpdate(
+     
+      const updatedSalaryScale = await salaryScaleRepository.findOneAndUpdate(
         { _id: id },
-        { 
+        {
           $set: {
             title,
             description,
-            components: updatedComponents,
+            components: updatedComponents, 
           }
         } as any
       );
   
-      return updatedsalaryScale;
+      return updatedSalaryScale;
   
     } catch (error) {
       console.error("Error updating salary structure", error);
       throw new Error("Error updating salary structure");
     }
   }
-
+  
+  
   async deletesalaryScale(id: string): Promise<void> {
     try {
       await salaryScaleRepository.deleteById(id);
