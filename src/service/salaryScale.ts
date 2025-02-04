@@ -55,18 +55,49 @@ export class SalaryScaleService {
     title: string,
     components: Array<{
       componentId: Types.ObjectId;
-      name: string;
       amount: number;
     }>,
     description: string
   ): Promise<IsalaryScale | null> {
     try {
+      
+      const existingSalaryScale = await salaryScaleRepository.findOne({ _id: id });
+      if (!existingSalaryScale) {
+        throw new Error("Salary scale not found");
+      }
+  
+     
+      const updatedComponents = await Promise.all(components.map(async (component) => {
+        const existingComponent = existingSalaryScale.components.find(c => c.componentId.toString() === component.componentId.toString());
+        
+        if (existingComponent) {
+       
+          return {
+            componentId: component.componentId,
+            name: existingComponent.name, 
+            amount: component.amount
+          };
+        } else {
+          
+          return component;
+        }
+      }));
+  
       const updatedsalaryScale = await salaryScaleRepository.findOneAndUpdate(
         { _id: id },
-        { title, components, description }
+        { 
+          $set: {
+            title,
+            description,
+            components: updatedComponents,
+          }
+        } as any
       );
+  
       return updatedsalaryScale;
+  
     } catch (error) {
+      console.error("Error updating salary structure", error);
       throw new Error("Error updating salary structure");
     }
   }
