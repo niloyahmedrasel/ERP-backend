@@ -14,6 +14,7 @@ export class SalaryScaleService {
     components: Array<{
       componentId: Types.ObjectId;
       name: string;
+      type:string;
       amount: number;
     }>,
     description: string
@@ -25,6 +26,7 @@ export class SalaryScaleService {
         }
         console.log(salaryComponent);
         components[i].name = salaryComponent.name;
+        components[i].type = salaryComponent.type;
       }
       const salaryScale = await salaryScaleRepository.create({
         title,
@@ -76,6 +78,7 @@ export class SalaryScaleService {
           return {
             componentId: component.componentId,
             name: existingComponent.name, 
+            type: existingComponent.type,
             amount: component.amount
           };
         } else {
@@ -87,6 +90,7 @@ export class SalaryScaleService {
             return {
               componentId: component.componentId,
               name: componentData.name, 
+              type: componentData.type,
               amount: component.amount
             };
           } else {

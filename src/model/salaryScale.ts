@@ -12,6 +12,7 @@ const salaryScaleSchema: Schema<IsalaryScale> = new Schema(
           required: true,
         },
         name: { type: String },
+        type: { type: String },
         amount: { type: Number },
       },
     ],

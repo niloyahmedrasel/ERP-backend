@@ -6,6 +6,7 @@ export interface IsalaryScale extends Document {
   components: {
     componentId: Types.ObjectId;
     name: string;
+    type: string;
     amount: number;
   }[];
   description: string;
