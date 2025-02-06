@@ -17,6 +17,9 @@ const salaryScaleSchema: Schema<IsalaryScale> = new Schema(
       },
     ],
     description: { type: String, required: true },
+    totalDeductions: { type: Number, default: 0, },
+    totalEarnings: { type: Number, default: 0,},
+    netSalary: { type: Number, default: 0,},
   },
   {
     timestamps: true,

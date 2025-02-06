@@ -18,14 +18,8 @@ export class PayrollService {
   ): Promise<IPayroll> {
       const payrollData = {
         employeeId,
-       // salaryScaleId,
         paymentMonth,
-        //componentsBreakdown,
       };
-
-      let grossSalary = 0;
-      let totalDeductions = 0;
-      let netSalary = 0;
       let componentsBreakdown: { componentId: Types.ObjectId; name: string; amount: number, type: string }[] = [];
 
       
@@ -70,18 +64,6 @@ export class PayrollService {
         if (!salaryComponent) {
           throw new AppError("Salary component not found",404);
         }
-
-
-        if (salaryComponent.type === "Earning") {
-          grossSalary += employeesalaryScale.components[i].amount;
-        }
-        if (salaryComponent.type === "Deduction") {
-          totalDeductions += employeesalaryScale.components[i].amount;
-        }
-
-        netSalary = grossSalary - totalDeductions;
-
-        console.log(grossSalary, totalDeductions, netSalary);
       }
 
       const paymentMonthFormatted = new Date(paymentMonth).toISOString().slice(0, 7); 
@@ -105,9 +87,9 @@ export class PayrollService {
         payroll.employeefourDigitID = employee?.id;
         payroll.salaryScaleId = employeesalaryScale._id;
         payroll.componentsBreakdown = componentsBreakdown;
-        payroll.grossSalary = grossSalary;
-        payroll.totalDeductions = totalDeductions;
-        payroll.netSalary = netSalary;
+        payroll.totalEarning = employeesalaryScale.totalEarnings;
+        payroll.totalDeductions = employeesalaryScale.totalDeductions;
+        payroll.netSalary = employeesalaryScale.netSalary;
         
         await payroll.save();
       }
@@ -136,7 +118,7 @@ export class PayrollService {
   ): Promise<IPayroll | null> {
     
     console.log(deleteComponent, addComponent, editComponent);
-      let grossSalary = 0;
+      let totalEarning = 0;
       let totalDeductions = 0;
       let netSalary = 0;
 
@@ -205,15 +187,15 @@ export class PayrollService {
         const component = payrollData.componentsBreakdown[j];
 
         if (component.type === "Earning") {
-          grossSalary += component.amount;
+          totalEarning += component.amount;
         } else if (component.type === "Deduction") {
           totalDeductions += component.amount;
         }
 
-        netSalary = grossSalary - totalDeductions;
+        netSalary = totalEarning - totalDeductions;
       }
 
-      payrollData.grossSalary = grossSalary;
+      payrollData.totalEarning = totalEarning;
       payrollData.totalDeductions = totalDeductions;
       payrollData.netSalary = netSalary;
 

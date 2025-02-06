@@ -10,4 +10,7 @@ export interface IsalaryScale extends Document {
     amount: number;
   }[];
   description: string;
+  totalDeductions: number;
+  totalEarnings: number;
+  netSalary: number;
 }

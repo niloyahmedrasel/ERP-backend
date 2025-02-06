@@ -15,7 +15,7 @@ const payrollValidationSchema = Joi.object({
       type: Joi.string().required(), // Ensure type is either 'fixed' or 'variable'
     })
   ), // Ensure componentsBreakdown is a required array of objects
-  grossSalary: Joi.number().min(0), // Ensure grossSalary is a non-negative number and required
+  totalEarning: Joi.number().min(0), // Ensure grossSalary is a non-negative number and required
   totalDeductions: Joi.number().min(0), // Ensure totalDeductions is a non-negative number and required
   netSalary: Joi.number().min(0), // Ensure netSalary is a non-negative number and required
   transactionId: Joi.string().allow(null), // Ensure transactionId is a string or null

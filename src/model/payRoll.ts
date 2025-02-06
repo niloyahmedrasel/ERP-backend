@@ -23,7 +23,7 @@ const payrollSchema: Schema<IPayroll> = new Schema(
         type: { type: String },
       },
     ],
-    grossSalary: { type: Number, default: 0, required: true },
+    totalEarning: { type: Number, default: 0, required: true },
     totalDeductions: { type: Number, default: 0, required: true },
     netSalary: { type: Number, default: 0, required: true },
     transactionId: {

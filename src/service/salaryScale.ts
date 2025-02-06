@@ -19,6 +19,9 @@ export class SalaryScaleService {
     }>,
     description: string
   ): Promise<IsalaryScale> {
+    let totalDeductions = 0;
+    let totalEarnings = 0;
+    let netSalary = 0;
       for(let i =0; i<components.length;i++) {
         const salaryComponent = await salaryComponentRepository.findById(components[i].componentId.toString());
         if(!salaryComponent) {
@@ -27,12 +30,25 @@ export class SalaryScaleService {
         console.log(salaryComponent);
         components[i].name = salaryComponent.name;
         components[i].type = salaryComponent.type;
+        if(components[i].type === "Deduction") {
+          totalDeductions += components[i].amount;
+        }
+        if(components[i].type === "Earning") {
+          totalEarnings += components[i].amount;
+        }
+        netSalary = totalEarnings - totalDeductions;
       }
       const salaryScale = await salaryScaleRepository.create({
         title,
         components,
         description,
       });
+      if(salaryScale){
+        salaryScale.totalDeductions = totalDeductions;
+        salaryScale.totalEarnings = totalEarnings;
+        salaryScale.netSalary = netSalary;
+        await salaryScale.save();
+      }
       return salaryScale;
   }
 
@@ -62,45 +78,67 @@ export class SalaryScaleService {
     description: string
   ): Promise<IsalaryScale | null> {
     try {
-      
+      let totalDeductions = 0;
+      let totalEarnings = 0;
+      let netSalary = 0;
+  
       const existingSalaryScale = await salaryScaleRepository.findOne({ _id: id });
       if (!existingSalaryScale) {
         throw new Error("Salary scale not found");
       }
   
- 
       const updatedComponents = await Promise.all(components.map(async (component) => {
-      
         const existingComponent = existingSalaryScale.components.find(c => c.componentId.toString() === component.componentId.toString());
-        
+  
         if (existingComponent) {
-          
-          return {
+  
+          const updatedComponent = {
             componentId: component.componentId,
-            name: existingComponent.name, 
+            name: existingComponent.name,
             type: existingComponent.type,
             amount: component.amount
           };
+  
+          if (updatedComponent.type === "Deduction") {
+            totalDeductions += updatedComponent.amount;
+          }
+          if (updatedComponent.type === "Earning") {
+            totalEarnings += updatedComponent.amount;
+          }
+  
+          return updatedComponent;
         } else {
           
           const componentData = await salaryComponentRepository.findOne({ _id: component.componentId });
   
           if (componentData) {
-           
-            return {
+          
+            const newComponent = {
               componentId: component.componentId,
-              name: componentData.name, 
+              name: componentData.name,
               type: componentData.type,
               amount: component.amount
             };
+  
+        
+            if (newComponent.type === "Deduction") {
+              totalDeductions += newComponent.amount;
+            }
+            if (newComponent.type === "Earning") {
+              totalEarnings += newComponent.amount;
+            }
+  
+            return newComponent;
           } else {
-           
             throw new Error(`Component with ID ${component.componentId} not found`);
           }
         }
       }));
   
-     
+   
+      netSalary = totalEarnings - totalDeductions;
+  
+   
       const updatedSalaryScale = await salaryScaleRepository.findOneAndUpdate(
         { _id: id },
         {
@@ -108,6 +146,9 @@ export class SalaryScaleService {
             title,
             description,
             components: updatedComponents, 
+            totalDeductions,
+            totalEarnings,
+            netSalary
           }
         } as any
       );
@@ -119,6 +160,7 @@ export class SalaryScaleService {
       throw new Error("Error updating salary structure");
     }
   }
+  
   
   
   async deletesalaryScale(id: string): Promise<void> {

@@ -13,7 +13,7 @@ export interface IPayroll extends Document {
     amount: number;
     type: string;
   }[];
-  grossSalary: number;
+  totalEarning: number;
   totalDeductions: number;
   netSalary: number;
   transactionId: Types.ObjectId;
